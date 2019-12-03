@@ -2,7 +2,7 @@ const path = require('path')
 var webpack = require('webpack')
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
-process.env.CVA_PORT = process.env.CVA_PORT || 9000
+process.env.EMVE_PORT = process.env.EMVE_PORT || 9000
 
 const config = function (mode) {
     let conf = {
@@ -59,7 +59,7 @@ const config = function (mode) {
             watchContentBase: true,
             compress: true,
             hot: true,
-            port: process.env.CVA_PORT
+            port: process.env.EMVE_PORT
         }
     }
 
