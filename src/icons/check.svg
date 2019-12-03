@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="12px" viewBox="0 0 16 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>check icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Backend" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="video-size-dropdown-menu" transform="translate(-14.000000, -67.000000)" fill="#0A72CC">
+            <g id="dropdown" transform="translate(5.000000, 0.000000)">
+                <path d="M14.4499382,78.7313849 L9.24993841,73.5313851 C8.9375307,73.2189774 8.9375307,72.7124479 9.24993841,72.4000096 L10.3812834,71.2686342 C10.6936911,70.9561959 11.2002511,70.9561959 11.5126588,71.2686342 L15.0156107,74.771586 L22.518553,67.2686437 C22.8309607,66.956236 23.3375208,66.956236 23.6499285,67.2686437 L24.7812734,68.4000192 C25.0936811,68.7124269 25.0936811,69.2189564 24.7812734,69.5313946 L15.5812832,78.7314154 C15.268845,79.0438231 14.7623154,79.0438231 14.4499382,78.7313849 Z" id="check-icon"></path>
+            </g>
+        </g>
+    </g>
+</svg>

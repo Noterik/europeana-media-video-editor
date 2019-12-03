@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="16px" viewBox="0 0 17 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>speech icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Backend" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="annotation-type-dropdown-menu" transform="translate(-18.000000, -65.000000)" fill="#777777">
+            <g id="dropdown" transform="translate(5.000000, 0.000000)">
+                <path d="M27.0155916,65.0000334 C28.1187079,65.0000334 29.0155869,65.8969123 29.0155869,67.0000286 L29.0155869,76.0000072 C29.0155869,77.1031234 28.1187079,78.0000024 27.0155916,78.0000024 L22.5156024,78.0000024 L18.6124744,80.9281265 C18.3656183,81.10937 18.0156131,80.9312393 18.0156131,80.6249961 L18.0156131,78.0000024 L15.0156202,78.0000024 C13.912504,78.0000024 13.015625,77.1031234 13.015625,76.0000072 L13.015625,67.0000286 C13.015625,65.8969123 13.912504,65.0000334 15.0156202,65.0000334 L27.0155916,65.0000334 Z" id="speech-icon"></path>
+            </g>
+        </g>
+    </g>
+</svg>

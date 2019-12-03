@@ -1,0 +1,2 @@
+- `yarn` or `npm i`
+- `yarn start:dev` or `npm run start:dev`# Europeana Media Video Editor
