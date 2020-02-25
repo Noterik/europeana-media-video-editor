@@ -39,8 +39,6 @@ var annotations;
 var manifestJsonld = {};
 var manifestMetadata = {};
 var videoMetadata = {};
-var titleVideoLoader;
-var embedLoader;
 var temporalRange = [0,-1];
 var subtitles;
 var subtitleTrack;
@@ -73,7 +71,8 @@ window.addEventListener('load', () => {
 
   //options = { mode: "player", manifest: "https://iiif.europeana.eu/presentation/2051906/data_euscreenXL_http___openbeelden_nl_media_90589/manifest?format=3"};
   //options = {mode: "player", manifest: "https://videoeditor.noterik.com/manifest/createmanifest.php?src=http://openbeelden.nl/files/09/9983.9970.WEEKNUMMER403-HRE0001578C.mp4&duration=86360&id=http://openbeelden.nl/files/09/9983.9970.WEEKNUMMER403-HRE0001578C.mp4"};
-  options = {mode: "player", manifest: "https://iiif.europeana.eu/presentation/08609/fe9c5449_9522_4a70_951b_ef0b27893ae9/manifest?format=3&wskey=api2demo"};
+  options = {mode: "player", manifest: "https://iiif.europeana.eu/presentation/08609/fe9c5449_9522_4a70_951b_ef0b27893ae9/manifest?format=3&wskey=api2demo", editor: "https://video-editor.eu", language: "nl"};
+  //options = {mode: "player", manifest: "https://beta.qandr.eu/euscreenxlmanifestservlet/?videoid=http://stream4.noterik.com/progressive/stream4/domain/euscreen/user/eu_ina/video/1059/rawvideo/1/raw.mp4&ticket=54064640&duration=318&maggieid=/domain/euscreenxl/user/eu_ina/video/EUS_0EBCBF356BFC4E12A014023BA41BD98C", editor: "https://video-editor.eu", language: "nl"};
   if (getAllUrlParams(window.location.href).manifest != undefined) {
     options.manifest = decodeURIComponent(getAllUrlParams(window.location.href).manifest);
   }
@@ -114,6 +113,12 @@ window.addEventListener('load', () => {
         let width = 320;
         let height = 240;
 
+        for (let [key, value] of Object.entries(manifestJsonld.rights)) {
+          if (value == "allowed") {
+            $('#'+key+"-tab").show();
+          }
+        }
+
         if (manifestJsonld.label) {
           $(".video-title").text(manifestJsonld.label[Object.keys(manifestJsonld.label)[0]]);
         }
@@ -131,8 +136,6 @@ window.addEventListener('load', () => {
         $("#resolution").trigger('contentChanged');
 
         setEmbedResolution();
-
-        //embedLoader.remove();
 
         loadEmbedSlider();
         loadTimeline();
@@ -420,6 +423,14 @@ window.addEventListener('load', () => {
   });
 
   $("#add-subtitle").on('click', function() {
+    //check if we have open edit boxes, close them
+    $(".subtitle-input-text").each(function() {
+      if ($(this).is(":visible")) {
+        let that = this;
+        saveSubtitle(that);
+      }
+    });
+
     //get current time position
     let playerObject = players.find(player => player.id == "subtitle-player");  
     let starttime = playerObject.player.avcomponent.getCurrentTime() * 1000;
@@ -472,24 +483,6 @@ window.addEventListener('load', () => {
 
     $(".subtitle-wrapper[data-id='"+subtitleId+"'] > textarea.subtitle-input-text").trigger("focus");
   });
-
-  $(document).on({
-    'blur': function() {
-      $(this).hide();
-      //copy text
-      let text = stripInput($(this).val());
-      //find existing subtitle
-      let id = $(this).parent().data("id");
-      let subtitle = subtitles.find(s => s.id === id);
-      subtitle.text = text;
-
-      //update subtitle
-      updateSubtitle(subtitle);
-      subtitles[subtitles.findIndex(s => s.id === subtitle.id)] = subtitle;
-      $(this).next().text(text);
-      $(this).next().show();
-    }
-  }, 'textarea.subtitle-input-text');
   
   $(document).on({
     'focus': function() {
@@ -507,14 +500,24 @@ window.addEventListener('load', () => {
 
   $(document).on({
     'click': function() {
+      let dataId = $(this).parent().parent().attr("data-id");
+
+      //check if we have open edit boxes, close them
+      $(".subtitle-input-text").each(function() {
+        if ($(this).is(":visible")) {
+          let that = this;
+          saveSubtitle(that);
+        }
+      });
+
       //enable edit subtitle
-      $(this).parent().hide();
-      $(this).parent().prev().show();
-      $(this).parent().prev().focus();
+      $(".subtitle-wrapper[data-id='"+dataId+"'] > .subtitle-text").hide();
+      $(".subtitle-wrapper[data-id='"+dataId+"'] > .subtitle-input-text").show();
+      $(".subtitle-wrapper[data-id='"+dataId+"'] > .subtitle-input-text").focus();
     }
   }, 'div.edit-subtitle');
 
-  $("#subtitle-language").on("change", function() {
+  $("#subtitle-language").on("change", function() {  
     if (unsavedSubtitleChanges) {
       var unsavedSubtitleChangesDialog = new MatDialog();
       unsavedSubtitleChangesDialog.confirm(
@@ -547,12 +550,18 @@ window.addEventListener('load', () => {
 
   //pause on typing subtitles
   $(document).on({
-      'keydown': function() {
+      'keydown': function(event) {
         if (pauseVideoWhileTyping) {
           let playerObject = players.find(player => player.id == "subtitle-player");
           playerObject.player.avcomponent.pause();
         }
-      }
+        var keycode = event.keyCode || event.which;
+        //on enter save subtitle
+        if(keycode == '13') {
+          let that = this;
+          saveSubtitle(that);
+        }
+    }
   }, 'textarea.subtitle-input-text');
 
   $("#pause-while-typing").on("change", function() {
@@ -675,6 +684,13 @@ window.addEventListener('load', () => {
   getPlaylist();
 
   $("#saveSubtitlesBtn").on("click", function() {
+    $(".subtitle-input-text").each(function() {
+      if ($(this).is(":visible")) {
+        let that = this;
+        saveSubtitle(that);
+      }
+    });
+
     storeSubtitles();
     unsavedSubtitleChanges = false;
   });
@@ -1475,8 +1491,6 @@ function subtitleItemUpdate(item) {
 
   subtitles[subtitles.findIndex(a => a.id === item.id)] = subtitle;
 
-  //store subtitles
-  //storeSubtitles();
   unsavedSubtitleChanges = true;
 
   //update UI
@@ -1653,4 +1667,20 @@ function previewSubtitles() {
     let height = parseInt(resolution.substring(resolution.indexOf("x")+1));
 
     window.open(subtitlePreviewUrl, "popupWindow", "width="+width+",height="+height+",scrollbars=yes");
+}
+
+function saveSubtitle(that) {
+  $(that).hide();
+  //copy text
+  let text = stripInput($(that).val());
+  //find existing subtitle
+  let id = $(that).parent().data("id");
+  let subtitle = subtitles.find(s => s.id === id);
+  subtitle.text = text;
+  
+  //update subtitle
+  updateSubtitle(subtitle);
+  subtitles[subtitles.findIndex(s => s.id === subtitle.id)] = subtitle;
+  $(that).next().text(text);
+  $(that).next().show();
 }
