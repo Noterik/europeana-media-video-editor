@@ -1,0 +1,877 @@
+body {
+    background-color: #EDEDED;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.semibold {
+    font-weight: 600;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+#header {
+    margin-top: 24px;
+    margin-bottom: 24px;
+    color: #1A1A1A;
+}
+
+#header-title {
+    font-size: 20px;
+    line-height: 27px;
+}
+
+#header-subtitle {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 19px;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+#content-card {
+    border-radius: 4px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
+}
+
+#embed-tab {
+    display: block;
+}
+
+#annotation-tab {
+    display: none;
+}
+
+#playlist-tab {
+    display: none;
+}
+
+#subtitles-tab {
+    display: none;
+}
+
+.white-button {
+    color: #0A72CC !important;
+    border-radius: 4px !important;
+    border: 1px solid #979797 !important;
+    box-shadow: none !important;
+    padding: 3px 15px 3px 15px !important;
+    height: 42px !important;
+    background-color: #fff !important;
+}
+
+.white-button:hover {
+    background-color: rgba(10, 114, 204, 0.15);
+}
+
+.waves-effect.waves-blue .waves-ripple {
+    background-color: rgba(10, 114, 204, 0.65);
+}
+
+.btn.waves-blue {
+    font-size: 14px;
+    padding: 0 16px;
+    margin-left: -5px;
+    margin-right: 0;
+}
+
+.btn.waves-blue:last-of-type {
+    padding: 0 16px;
+}
+
+.btn.waves-blue i {
+    font-size: 1.3rem;
+    width: 19px;
+}
+
+.btn.blue-button {
+    font-size: 14px;
+    padding: 0 16px;
+}
+
+.btn.blue-button:last-of-type {
+    padding: 0 16px;
+}
+
+.eups-player .btn:hover {
+    background-color: transparent;
+}
+
+.eups-player .btn:focus {
+    background-color: transparent;
+}
+
+.modal .btn:hover {
+    background-color: transparent;
+}
+
+#wrapper .tabs .tab a {
+    color: rgba(0, 0, 0, .6);
+    text-transform: capitalize;
+    font-size: 18px;
+}
+
+#wrapper .tabs .tab a:hover {
+    background-color: #fafafa;
+}
+
+#wrapper .tabs .tab a.active {
+    background-color: #fff;
+    color: #1A1A1A;
+    font-weight: bold;
+}
+
+#wrapper .tabs .indicator {
+    background-color: #0A72CC;
+    z-index: 1;
+}
+
+#tabs-line {
+    border-top: 1px solid rgba(160, 160, 160, 0.4);
+    margin-left: .75rem;
+    margin-bottom: 12px;
+    width: calc(100% - 1.5rem);
+}
+
+.video-title {
+    color: #1A1A1A;
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.player-wrapper {
+    max-height:600px;
+}
+
+.eups-player{
+    width: 100% !important;
+    height: 300px !important;
+}
+
+#embed-select-time {
+    display: flex;
+}
+
+.bold-item-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1A1A1A;
+    width: auto;
+    padding: 0 15px 0 20px  ;
+}
+
+.noUi-connect {
+    background: #79B2E3 !important;
+}
+
+.noUi-horizontal .noUi-handle, .noUi-vertical .noUi-handle {
+    background: #79B2E3 !important;
+}
+
+.noUi-target.noUi-horizontal .noUi-tooltip {
+    background: #79B2E3 !important;
+}
+
+.noUi-target.noUi-horizontal .noUi-active .noUi-tooltip {
+    border-radius: 19px 19px 19px 0 !important;
+    transform: rotate(-45deg) translate(32px, -34px) !important;
+    width: 38px !important;
+    height: 38px !important;
+}
+
+.noUi-tooltip span {
+    top: 10px !important;
+    left: 0 !important;
+}
+
+.embed-start-end-slider {
+    padding-top: 12px !important;
+    flex: 1;
+}
+
+#embed-select-resolution {
+    display: none; 
+}
+
+#embed-select-resolution .input-field {
+    margin-top: -0.2rem !important;
+    margin-bottom: -1rem !important;
+}
+
+.select-wrapper input.select-dropdown {
+    height: 2.5rem !important;
+    font-family: 'Open Sans' !important;
+    border-bottom: none !important;
+    background-color: rgba(212,212,212, 0.5) !important;
+    border-radius: 4px !important;
+    padding: 0 25px 0 10px !important;
+    font-weight: 600 !important;
+    box-sizing: border-box !important;
+    line-height: 2.5rem !important;
+    margin-top: -.25rem !important;
+}
+
+.select-wrapper input.select-dropdown:focus {
+    border-bottom: none !important;
+}
+
+.dropdown-content li>a, .dropdown-content li>span {
+    color: #1A1A1A !important;
+}
+
+input[type=text].input-text {
+    border: 1px solid #979797 !important;
+    border-radius: 5px 0 0 5px !important;
+    padding: 0 20px 0 10px !important;
+    width: auto !important;
+    font-family: 'Open Sans' !important;
+    font-size: 100% !important;
+    height: 2.5rem !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+input[type=text].input-text:focus {
+    border: 1px solid #979797 !important;
+    box-shadow: none !important;
+}
+
+.blue-button {
+    box-sizing: border-box !important;
+    border: 1px solid #0A72CC !important;
+    border-radius: 4px !important;
+    background-color: #0A72CC !important;
+    box-shadow: none !important;
+}
+
+.copy-button {
+    background-color: #FFF !important;
+    border: 1px solid #979797 !important;
+    border-radius: 0 5px 5px 0 !important;
+    color: #0A72CC !important;
+    box-shadow: none !important;
+    height: 2.5rem !important;
+    line-height: 2.5rem !important;
+    vertical-align: top !important;
+    box-sizing: content-box;
+    margin-left: -5px;
+    font-weight: bold;
+}
+
+.bottom-row {
+    margin-top: -20px;
+    margin-bottom: 0 !important;
+}
+
+.select-dropdown li img {
+    float: left !important;
+    height: auto !important;
+    width: auto !important;
+    padding: 14px 0;
+}
+
+.select-wrapper input[class*=" annotation-type-"] {
+    background-position: 10px 12px;
+    padding-left: 35px !important;
+}
+
+.annotation-type-speech-background {
+    background: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='17px' height='16px' viewBox='0 0 17 16' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Espeech icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='annotation-type-dropdown-menu' transform='translate(-18.000000, -65.000000)' fill='%231A1A1A'%3E%3Cg id='dropdown' transform='translate(5.000000, 0.000000)'%3E%3Cpath d='M27.0155916,65.0000334 C28.1187079,65.0000334 29.0155869,65.8969123 29.0155869,67.0000286 L29.0155869,76.0000072 C29.0155869,77.1031234 28.1187079,78.0000024 27.0155916,78.0000024 L22.5156024,78.0000024 L18.6124744,80.9281265 C18.3656183,81.10937 18.0156131,80.9312393 18.0156131,80.6249961 L18.0156131,78.0000024 L15.0156202,78.0000024 C13.912504,78.0000024 13.015625,77.1031234 13.015625,76.0000072 L13.015625,67.0000286 C13.015625,65.8969123 13.912504,65.0000334 15.0156202,65.0000334 L27.0155916,65.0000334 Z' id='speech-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E") no-repeat;
+}
+
+.annotation-type-note-background {
+    background: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='15px' height='14px' viewBox='0 0 15 14' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Enote icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='annotation-type-dropdown-menu' transform='translate(-19.000000, -97.000000)' fill='%231A1A1A'%3E%3Cg id='dropdown' transform='translate(5.000000, 0.000000)'%3E%3Cpath d='M23.7656018,106.00001 C23.3530966,106.00001 23.0156035,106.337503 23.0156035,106.750008 L23.0156035,110.999998 L14.7656232,110.999998 C14.3500053,110.999998 14.015625,110.665617 14.015625,110.249999 L14.015625,97.7500292 C14.015625,97.3344113 14.3500053,97.000031 14.7656232,97.000031 L27.2655934,97.000031 C27.6812113,97.000031 28.0155916,97.3344113 28.0155916,97.7500292 L28.0155916,106.00001 L23.7656018,106.00001 Z M27.7968421,107.718755 L24.7343494,110.781248 C24.5937248,110.921873 24.4031124,110.999998 24.2031007,110.999998 L24.0156012,110.999998 L24.0156012,107.000007 L28.0155916,107.000007 L28.0155916,107.190619 C28.0155916,107.387518 27.9374668,107.578131 27.7968421,107.718755 Z' id='note-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E") no-repeat;
+}
+
+.annotation-type-title-background {
+    background: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='15px' height='14px' viewBox='0 0 15 14' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Etitle icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='annotation-type-dropdown-menu' transform='translate(-19.000000, -126.000000)' fill='%231A1A1A'%3E%3Cg id='dropdown' transform='translate(5.000000, 0.000000)'%3E%3Cpath d='M27.5155928,138.000002 C27.7905861,138.000002 28.0155916,138.225008 28.0155916,138.500001 L28.0155916,139.499999 C28.0155916,139.774992 27.7905861,139.999998 27.5155928,139.999998 L23.2656029,139.999998 C22.9906097,139.999998 22.7656041,139.774992 22.7656041,139.499999 L22.7656041,138.500001 C22.7656041,138.225008 22.9906097,138.000002 23.2656029,138.000002 L23.9968634,138.000002 L23.1655971,135.475015 L18.8468513,135.475015 L18.0156155,138.000002 L18.7656137,138.000002 C19.0406069,138.000002 19.2656125,138.225008 19.2656125,138.500001 L19.2656125,139.499999 C19.2656125,139.774992 19.0406069,139.999998 18.7656137,139.999998 L14.5156238,139.999998 C14.2406306,139.999998 14.015625,139.774992 14.015625,139.499999 L14.015625,138.500001 C14.015625,138.225008 14.2406306,138.000002 14.5156238,138.000002 L15.3500029,138.000002 L19.4062371,126.334411 C19.4749931,126.1344 19.6656054,126.000031 19.8780988,126.000031 L22.1531178,126.000031 C22.3656112,126.000031 22.5562235,126.1344 22.6249795,126.334411 L26.6812137,138.000002 L27.5155928,138.000002 Z M19.4656242,133.384382 L22.5468547,133.384382 L21.2562388,129.509392 C21.1062453,129.034387 21.0406021,128.628138 21.0156083,128.425013 C20.9843584,128.625025 20.9124897,129.031274 20.7781211,129.506279 L19.4656242,133.384382 Z' id='title-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E") no-repeat;
+}
+
+.annotation-type-spotlight-background {
+    background: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='18px' height='16px' viewBox='0 0 18 16' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Ehighlight icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='annotation-type-dropdown-menu' transform='translate(-17.000000, -155.000000)' fill='%231A1A1A'%3E%3Cg id='dropdown' transform='translate(5.000000, 0.000000)'%3E%3Cpath d='M12.515625,169.999387 L14.6509349,167.797183 L16.7459311,169.892179 L15.6381151,170.999995 L12.515625,169.999387 Z M16.4096892,162.499069 L17.7071715,161.391589 L23.1240287,166.808446 L22.0130999,168.109682 C21.7162256,168.44626 21.2499792,168.577821 20.8209031,168.446565 L19.4853044,168.037814 L17.8959222,169.627196 L14.8887578,166.620001 L16.4803067,165.028147 L16.0725013,163.68971 C16.0450966,163.599744 16.0228493,163.450453 16.0228493,163.356428 C16.0228493,163.071639 16.1961582,162.687546 16.4096892,162.499069 Z M29.0130832,157.4772 C29.6537067,158.117824 29.6859027,159.145653 29.0865083,159.825034 L23.7756079,166.045631 L18.4702922,160.74001 L24.6905838,155.428774 C25.3699645,154.829715 26.3977941,154.861911 27.0380818,155.502229 L29.0130832,157.4772 Z' id='highlight-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E") no-repeat;
+}
+
+.annotation-type-label-background {
+    background: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='16px' height='16px' viewBox='0 0 16 16' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Elabel icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='annotation-type-dropdown-menu' transform='translate(-18.000000, -184.000000)' fill='%231A1A1A'%3E%3Cg id='dropdown' transform='translate(5.000000, 0.000000)'%3E%3Cpath d='M13.015625,191.878707 L13.015625,185.50003 C13.015625,184.671602 13.6871932,184.000033 14.5156214,184.000033 L20.8942988,184.000033 C21.2372546,184.000033 21.7124426,184.196871 21.9549347,184.439363 L28.5762568,191.060685 C29.1620098,191.646438 29.1620098,192.596204 28.5762568,193.181988 L22.1975794,199.560665 C21.6117959,200.146418 20.6620301,200.146418 20.0762771,199.560665 L13.454955,192.939343 C13.2124629,192.696851 13.015625,192.221663 13.015625,191.878707 Z M16.5156167,186.000029 C15.6871885,186.000029 15.0156202,186.671597 15.0156202,187.500025 C15.0156202,188.328453 15.6871885,189.000021 16.5156167,189.000021 C17.3440449,189.000021 18.0156131,188.328453 18.0156131,187.500025 C18.0156131,186.671597 17.3440449,186.000029 16.5156167,186.000029 Z' id='label-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E") no-repeat;
+}
+
+.annotation-type-pause-background {
+    background: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='15px' height='15px' viewBox='0 0 15 15' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Epause icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='annotation-type-dropdown-menu' transform='translate(-19.000000, -212.000000)' fill='%231A1A1A'%3E%3Cg id='dropdown' transform='translate(5.000000, 0.000000)'%3E%3Cpath d='M18.5156143,226.968748 L15.5156214,226.968748 C14.6874984,226.968748 14.015625,226.296874 14.015625,225.468751 L14.015625,214.468777 C14.015625,213.640654 14.6874984,212.968781 15.5156214,212.968781 L18.5156143,212.968781 C19.3437373,212.968781 20.0156107,213.640654 20.0156107,214.468777 L20.0156107,225.468751 C20.0156107,226.296874 19.3437373,226.968748 18.5156143,226.968748 Z M28.0155916,225.468751 C28.0155916,226.296874 27.3437182,226.968748 26.5155952,226.968748 L23.5156024,226.968748 C22.6874793,226.968748 22.0156059,226.296874 22.0156059,225.468751 L22.0156059,214.468777 C22.0156059,213.640654 22.6874793,212.968781 23.5156024,212.968781 L26.5155952,212.968781 C27.3437182,212.968781 28.0155916,213.640654 28.0155916,214.468777 L28.0155916,225.468751 Z' id='pause-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E") no-repeat;
+}
+
+.annotation-timing {
+    margin-top: 10px;
+    padding: 0 !important;
+}
+
+.annotation-timing-text {
+   padding: 0;
+}
+
+.stepbackward {
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='11px' height='14px' viewBox='0 0 11 14' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Estep back icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='EUMediaPlayer-Video-Editor-Annotation-1400px' transform='translate(-691.000000, -408.000000)' fill='%23777777'%3E%3Cg id='Right-column' transform='translate(685.000000, 304.000000)'%3E%3Cg id='Timing' transform='translate(4.000000, 68.000000)'%3E%3Cpath d='M2.01562023,49.6249985 L2.01562023,36.3750301 C2.01562023,36.1687928 2.18438204,36.000031 2.39061934,36.000031 L3.89061576,36.000031 C4.09685306,36.000031 4.26561487,36.1687928 4.26561487,36.3750301 L4.26561487,41.8875292 L10.3749753,36.2312927 C11.0187116,35.6969006 12.0155964,36.1437684 12.0155964,37.0000286 L12.0155964,49 C12.0155964,49.8562602 11.0187116,50.303128 10.3749753,49.768736 L4.26561487,44.1468927 L4.26561487,49.6249985 C4.26561487,49.8312358 4.09685306,49.9999976 3.89061576,49.9999976 L2.39061934,49.9999976 C2.18438204,49.9999976 2.01562023,49.8312358 2.01562023,49.6249985 Z' id='step-back-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.stepforward {
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='11px' height='14px' viewBox='0 0 11 14' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Estep foward icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='EUMediaPlayer-Video-Editor-Annotation-1400px' transform='translate(-921.000000, -408.000000)' fill='%23777777'%3E%3Cg id='Right-column' transform='translate(685.000000, 304.000000)'%3E%3Cg id='Timing' transform='translate(4.000000, 68.000000)'%3E%3Cpath d='M242.015596,36.3750301 L242.015596,49.6249985 C242.015596,49.8312358 241.846835,49.9999976 241.640597,49.9999976 L240.140601,49.9999976 C239.934364,49.9999976 239.765602,49.8312358 239.765602,49.6249985 L239.765602,44.1124994 L233.656241,49.768736 C233.012505,50.303128 232.01562,49.8562602 232.01562,49 L232.01562,37.0000286 C232.01562,36.1437684 233.012505,35.6969006 233.656241,36.2312927 L239.765602,41.8531359 L239.765602,36.3750301 C239.765602,36.1687928 239.934364,36.000031 240.140601,36.000031 L241.640597,36.000031 C241.846835,36.000031 242.015596,36.1687928 242.015596,36.3750301 Z' id='step-foward-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-position-x: right;
+}
+
+.step-button[title="Step backward"]{
+    float: left;
+    line-height: 2rem;
+}
+
+.step-button[title="Step forward"]{
+    float: right;
+    line-height: 2rem;
+    padding: 0 0 0 5px !important;
+}
+
+.step-button i {
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 15px;
+    vertical-align: middle;
+    width: 15px;
+    cursor: pointer;
+    font-size: 0;
+}
+
+.annotation-timing .step-button {
+    font-size: 0;
+    background: 0 0;
+    border: 0;  
+    box-shadow: none;
+    padding: 0 5px 0 0;
+}
+
+.annotationtiming-updown-wrapper {
+    height: 2rem;
+    width: 15px;
+    background-color: rgba(212,212,212, 0.5);
+    float: left;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0 4px 4px 0 !important; 
+}
+
+.annotationtiming-updown {
+    height: 50%;
+    width: 100%;
+}
+
+.stepup {
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='9px' height='15px' viewBox='0 0 9 15' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Esort icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='EUMediaPlayer-Video-Editor-Annotation-1400px' transform='translate(-783.000000, -407.000000)' fill='%23777777'%3E%3Cg id='Right-column' transform='translate(685.000000, 304.000000)'%3E%3Cg id='Timing' transform='translate(4.000000, 68.000000)'%3E%3Cpath d='M95.259763,44.6250104 L101.76756,44.6250104 C102.352725,44.6250104 102.645282,45.3332225 102.232403,45.7461015 L98.9785041,49 C98.7214628,49.2570413 98.3058601,49.2570413 98.0515425,49 L94.7949203,45.7461015 C94.3820414,45.3332225 94.6745974,44.6250104 95.259763,44.6250104 Z M102.232403,38.7539235 C102.645282,39.1668025 102.352725,39.8750146 101.76756,39.8750146 L95.259763,39.8750146 C94.6745974,39.8750146 94.3820414,39.1668025 94.7949203,38.7539235 L98.0515425,35.500025 C98.3058601,35.2429837 98.7214628,35.2429837 98.9785041,35.500025 L102.232403,38.7539235 Z' id='sort-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");    
+    clip-path: inset(0px 0px 10px 0px);
+    margin-top: 5px;
+}
+
+.stepdown {
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='9px' height='15px' viewBox='0 0 9 15' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Esort icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='EUMediaPlayer-Video-Editor-Annotation-1400px' transform='translate(-783.000000, -407.000000)' fill='%23777777'%3E%3Cg id='Right-column' transform='translate(685.000000, 304.000000)'%3E%3Cg id='Timing' transform='translate(4.000000, 68.000000)'%3E%3Cpath d='M95.259763,44.6250104 L101.76756,44.6250104 C102.352725,44.6250104 102.645282,45.3332225 102.232403,45.7461015 L98.9785041,49 C98.7214628,49.2570413 98.3058601,49.2570413 98.0515425,49 L94.7949203,45.7461015 C94.3820414,45.3332225 94.6745974,44.6250104 95.259763,44.6250104 Z M102.232403,38.7539235 C102.645282,39.1668025 102.352725,39.8750146 101.76756,39.8750146 L95.259763,39.8750146 C94.6745974,39.8750146 94.3820414,39.1668025 94.7949203,38.7539235 L98.0515425,35.500025 C98.3058601,35.2429837 98.7214628,35.2429837 98.9785041,35.500025 L102.232403,38.7539235 Z' id='sort-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    clip-path: inset(10px 0px 0px 0px);
+    margin-top: -10px;
+}
+
+.annotationtiming-element {
+    height: 2rem !important;
+    border-radius: 4px 0 0 4px !important;  
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    width: fit-content !important;
+    min-width: 70px;
+    background-color: rgba(212,212,212, 0.5) !important;
+    border: none !important;
+    float: left !important;
+    direction: rtl;
+    font-family: 'Open Sans';
+    color: #4A4A4A;
+}
+
+.annotationtiming-element:focus {
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+.annotation-input-text {
+    width: 100%;
+    height: 70px;
+    resize: none;
+    box-sizing: border-box;	
+    border: 1px solid #777777;
+    border-radius: 4px;
+    padding: 9px;
+    margin: 15px 0 5px 0;
+    font-family: 'Open Sans';
+    font-size: 14px;
+}
+
+#annotation-cancel-button {
+    text-transform: uppercase;
+    height: 42px;
+    line-height: 42px;
+    font-size: 14px;
+    color: #0A72CC !important;
+    cursor: pointer;
+    margin-right: 6px;
+}
+
+#annotation-select {
+    margin-top: 70px;
+}
+
+#annotation-embed {
+    margin-top: 55px;
+}
+
+#annotation-delete-button {
+    text-transform: uppercase;
+    line-height: 19px;
+    font-size: 14px;
+    color: #0A72CC !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-right: -16px;
+}
+
+.select-annotation {
+    margin-top: 30px !important;
+}
+
+.delete-icon {
+    width: 14px;
+    height: 16px;
+    margin-right: 12px;
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='15px' height='16px' viewBox='0 0 15 16' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Edelete icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='EUMediaPlayer-Video-Editor-Annotation-1400px' transform='translate(-852.000000, -653.000000)' fill='%230A72CC'%3E%3Cg id='Right-column' transform='translate(685.000000, 304.000000)'%3E%3Cg id='annotation-deletion' transform='translate(4.000000, 283.000000)'%3E%3Cg id='Delete-button' transform='translate(144.000000, 64.000000)'%3E%3Cpath d='M32.5155928,3.00003099 C32.7915931,3.00003099 33.0155916,3.22402948 33.0155916,3.5000298 L33.0155916,4.50002742 C33.0155916,4.77602774 32.7915931,5.00002623 32.5155928,5.00002623 L19.5156238,5.00002623 C19.2396235,5.00002623 19.015625,4.77602774 19.015625,4.50002742 L19.015625,3.5000298 C19.015625,3.22402948 19.2396235,3.00003099 19.5156238,3.00003099 L23.2656149,3.00003099 L23.5593764,2.41565128 C23.6715587,2.18622068 23.9698673,2.00003338 24.2252683,2.00003338 L27.8005162,2.00003338 C28.0568327,2.00003338 28.3575827,2.18622068 28.4718402,2.41565128 L28.7656018,3.00003099 L32.5155928,3.00003099 Z M20.6781271,16.5937486 L20.0156226,6.00002384 L32.015594,6.00002384 L31.3530895,16.5937486 C31.3045056,17.3699003 30.6338834,17.9999037 29.8562364,17.9999952 L22.1749803,17.9999952 C21.3973332,17.9999037 20.726711,17.3699003 20.6781271,16.5937486 Z' id='delete-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.preview-button {
+    text-transform: uppercase;
+    line-height: 19px;
+    font-size: 14px;
+    color: #0A72CC !important;
+    margin-right: 12px;
+    margin-top: 10px;
+    display: flex;
+    cursor: pointer;
+}
+
+.preview-icon {
+    width: 18px;
+    height: 12px;
+    margin-right: 12px;
+    margin-top: 4px;
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='18px' height='12px' viewBox='0 0 18 12' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Epreview icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='EUMediaPlayer-Video-Editor-Annotation-1400px' transform='translate(-833.000000, -861.000000)' fill='%230A72CC'%3E%3Cg id='Right-column' transform='translate(685.000000, 304.000000)'%3E%3Cg id='annotation-deletion' transform='translate(4.000000, 283.000000)'%3E%3Cg id='Delete-button' transform='translate(144.000000, 64.000000)'%3E%3Cpath d='M17.9068177,215.543778 C17.9668456,215.662491 18.0155516,215.866836 18.0155516,215.999862 C18.0155516,216.132888 17.9668456,216.337233 17.9068177,216.455946 C16.2130961,219.761266 12.8571471,222 9.01560354,222 C5.17405997,222 1.81905698,219.762823 0.124389389,216.456251 C0.0643614561,216.337538 0.0156555175,216.133193 0.0156555175,216.000167 C0.0156555175,215.867141 0.0643614561,215.662796 0.124389389,215.544083 C1.81811094,212.238762 5.17405997,210.000029 9.01560354,210.000029 C12.8571471,210.000029 16.2121501,212.237206 17.9068177,215.543778 Z M9.01560354,220.500004 L9.0178008,220.500004 C11.500583,220.500004 13.5155928,218.484994 13.5155928,216.002212 L13.5155928,216.000014 C13.5155928,213.516011 11.4996064,211.500025 9.01560354,211.500025 C6.53160068,211.500025 4.51561427,213.516011 4.51561427,216.000014 C4.51561427,218.484017 6.53160068,220.500004 9.01560354,220.500004 Z M9.01560354,213.000021 L9.02265309,213.000021 C10.6748403,213.000021 12.0157795,214.34093 12.0157795,215.993117 C12.0157795,217.645335 10.6748403,218.986244 9.02265309,218.986244 C7.37043535,218.986244 6.02952668,217.645335 6.02952668,215.993117 C6.02952668,215.772873 6.07634053,215.421647 6.13404913,215.209092 C6.35227981,215.369675 6.74934308,215.500015 7.02030801,215.500015 C7.84571497,215.500015 8.51560473,214.830126 8.51560473,214.004719 C8.51560473,213.733754 8.38526447,213.336691 8.22468136,213.11846 C8.43854803,213.056204 8.79288679,213.003134 9.01560354,213.000021 Z' id='preview-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.timeline-wrapper {
+    margin-top: 20px;
+}
+
+.timeline-inner-wrapper {
+    padding: 10px 10px 10px 10px;
+    background-color: #EDEDED;
+}
+
+.vis-timeline {
+    border: none !important;
+    background-color: #EDEDED;
+}
+
+.vis-time-axis .vis-grid.vis-minor {
+    border-color: #bfbfbf !important;
+}
+
+.vis-custom-time {
+    background-color: #0A72CC !important;
+    width: 1px;
+    z-index: 9999 !important;
+}
+
+.vis-item {
+    border: 1px solid #EDEDED !important;
+    border-radius: 4px !important;
+    background-color: #F9F7F7 !important;
+    margin-top: 5px;
+}
+
+.vis-item.vis-selected {
+    transition: 0.5s;
+    background-color: #FFF !important;
+    box-shadow: 0 0 2px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.12), 0 0 4px 0 rgba(0,0,0,0.12), 0 4px 4px 0 rgba(0,0,0,0.12);
+}
+
+.vis-minor {
+    text-align: left;
+    font-size: 12px;
+}
+
+.vis-item-content {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.vis-item .vis-delete {
+    right: -12px  !important;
+    border-radius: 50% 50%;
+    background-color: #0A72CC;
+    margin-left: -8px;
+    margin-top: -8px;
+    line-height: 10px;
+    padding-left: 4px !important;
+    padding-top: 2px !important;
+}
+
+.vis-item .vis-delete-rtl:after, .vis-item .vis-delete:after {
+    color: #fff !important;
+    font-size: 12px !important;
+}
+
+.vis-item .vis-delete, .vis-item .vis-delete-rt {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.vis-item .vis-delete-rtl:hover, .vis-item .vis-delete:hover {
+    background-color: #0A72CC !important;
+}
+
+.vis-custom-time-handle {
+    height: 40px;
+    width: 18px;
+    background-color: #0A72CC;
+    border-radius: 5px;
+    margin-left: 2px;
+}
+
+.invalid-form-value {
+    border: 1px solid #f00 !important;
+}
+
+.select-wrapper input.select-dropdown.invalid-form-value {
+    border-bottom: 1px solid #f00 !important;
+}
+
+.type-embed {
+    display: inline-block;
+}
+
+.type-embed .select-wrapper input.select-dropdown {
+    background-color: rgba(255,255,255,0.5) !important;
+    border: 1px solid #979797 !important;
+    border-radius: 0!important;
+    color: #0A72CC !important;
+    box-shadow: none !important;
+    height: 2.5rem !important;
+    line-height: 2.5rem !important;
+    vertical-align: top !important;
+    box-sizing: content-box !important;
+    margin-left: -5px;
+    font-family: 'Open Sans' !important;
+    width: 70px;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    font-size: 100%;
+}
+
+.type-embed .dropdown-content li {
+    text-transform: uppercase;
+}
+
+.type-embed .dropdown-content li>a, .dropdown-content li>span {
+    color: #1A1A1A !important;
+}
+
+#playlist .eups-player {
+    height: 275px !important;
+}
+
+.playlist-video {
+    padding-bottom: 14px;
+}
+
+.playlist.video-title-playlist {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #1A1A1A;
+}
+
+.playlist-name-box {
+    height: 172px;
+    width: 100%;
+    border-radius: 4px;
+    background-color: #EDEDED;
+    padding: 14px 21px;
+    position: relative;
+    margin-top: 40px;
+}
+
+.playlist-name-title {
+    font-size: 16px;
+    color: #1A1A1A;
+}
+
+.playlist-enter-name {
+    font-size: 16px;
+    color: #777;
+}
+
+#playlistname-input {
+    font-family: 'Open Sans', sans-serif;
+}
+
+#playlistname-input::placeholder {
+    color: #777;
+}
+
+#playlistname-input:focus {
+    border-bottom: 1px solid #0A72CC; 
+    box-shadow: 0 1px 0 0 #0A72CC;
+}
+
+.invalid-input-value {
+    border-bottom: 1px solid  #f00 !important;
+}
+
+#playlistname {
+    font-size: 16px;
+    margin-top: 26px;
+    margin-bottom: 16px;
+    display: none;
+}
+
+#playlist-save-name {
+    clear: both;
+    color: #0A72CC;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin-right: 4px;
+    bottom: 0;
+    position: absolute;
+    right: 0;
+    margin-bottom: 8px;
+}
+
+#playlist-edit-name {
+    clear: both;
+    color: #0A72CC;
+    cursor: pointer;
+    text-transform: uppercase;
+    display: none;
+    margin-right: 4px;
+    bottom: 0;
+    position: absolute;
+    right: 0;
+    margin-bottom: 8px;
+}
+
+.playlist .delete-playlist-item {
+    text-transform: uppercase;
+    line-height: 19px;
+    font-size: 14px;
+    color: #0A72CC !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-right: -16px;
+}
+
+#playlist-embed {
+    margin-top: 30px;
+}
+
+.add-button-inner {
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='15px' height='14px' viewBox='0 0 15 14' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Eplus icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='EUMediaPlayer-Video-Editor-Subtitles-1400px' transform='translate(-283.000000, -764.000000)' fill='%230A72CC'%3E%3Cg id='Main-content'%3E%3Cg id='Main-Card' transform='translate(25.000000, 110.000000)'%3E%3Cg id='Left-column' transform='translate(54.000000, 195.000000)'%3E%3Cg id='Subtitle-editor' transform='translate(2.000000, 250.000000)'%3E%3Cg id='subtitles' transform='translate(1.000000, 33.000000)'%3E%3Cg id='Group-1'%3E%3Cpath d='M214.015594,181.500018 C214.567778,181.500018 215.015592,181.947832 215.015592,182.500015 L215.015592,183.500013 C215.015592,184.052197 214.567778,184.500011 214.015594,184.500011 L209.515605,184.500011 L209.515605,189 C209.515605,189.552184 209.067791,189.999998 208.515607,189.999998 L207.51561,189.999998 C206.963426,189.999998 206.515612,189.552184 206.515612,189 L206.515612,184.500011 L202.015623,184.500011 C201.463439,184.500011 201.015625,184.052197 201.015625,183.500013 L201.015625,182.500015 C201.015625,181.947832 201.463439,181.500018 202.015623,181.500018 L206.515612,181.500018 L206.515612,177.000029 C206.515612,176.447845 206.963426,176.000031 207.51561,176.000031 L208.515607,176.000031 C209.067791,176.000031 209.515605,176.447845 209.515605,177.000029 L209.515605,181.500018 L214.015594,181.500018 Z' id='plus-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-position-x: right;
+}
+
+.add-button {
+    font-size: 0;
+    background: 0 0;
+    border: 0;
+    box-shadow: none;
+    padding: 15px 10px 0 0;
+}
+
+.add-button:focus {
+    background-color: transparent;
+}
+
+.add-button i {
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 15px;
+    vertical-align: middle;
+    width: 15px;
+    cursor: pointer;
+    font-size: 0;
+}
+
+.modal-footer a {
+    color: #0A72CC;
+}
+
+.bookmark-image-wrapper {
+    position: relative;
+    display: flex;
+    background-color: #000;
+}
+
+.bookmark-image {
+    object-fit: contain;
+    width: 100%;
+    max-height: 10rem;
+}
+
+.bookmark-title {
+    color: #1A1A1A;
+    padding-top: 14px;
+    font-size: 14px;
+}
+
+.bookmark:hover .bookmark-overlay {
+    opacity: 1;
+}
+
+.bookmark-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    background-color: rgba(255, 255, 255, .7);
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='30px' height='28px' viewBox='0 0 15 14' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Eplus icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='EUMediaPlayer-Video-Editor-Subtitles-1400px' transform='translate(-283.000000, -764.000000)' fill='%230A72CC'%3E%3Cg id='Main-content'%3E%3Cg id='Main-Card' transform='translate(25.000000, 110.000000)'%3E%3Cg id='Left-column' transform='translate(54.000000, 195.000000)'%3E%3Cg id='Subtitle-editor' transform='translate(2.000000, 250.000000)'%3E%3Cg id='subtitles' transform='translate(1.000000, 33.000000)'%3E%3Cg id='Group-1'%3E%3Cpath d='M214.015594,181.500018 C214.567778,181.500018 215.015592,181.947832 215.015592,182.500015 L215.015592,183.500013 C215.015592,184.052197 214.567778,184.500011 214.015594,184.500011 L209.515605,184.500011 L209.515605,189 C209.515605,189.552184 209.067791,189.999998 208.515607,189.999998 L207.51561,189.999998 C206.963426,189.999998 206.515612,189.552184 206.515612,189 L206.515612,184.500011 L202.015623,184.500011 C201.463439,184.500011 201.015625,184.052197 201.015625,183.500013 L201.015625,182.500015 C201.015625,181.947832 201.463439,181.500018 202.015623,181.500018 L206.515612,181.500018 L206.515612,177.000029 C206.515612,176.447845 206.963426,176.000031 207.51561,176.000031 L208.515607,176.000031 C209.067791,176.000031 209.515605,176.447845 209.515605,177.000029 L209.515605,181.500018 L214.015594,181.500018 Z' id='plus-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#createsubtitle {
+    margin-top: 20px;
+    width: 100%;   
+    font-weight: bold; 
+}
+
+.select-language.col {
+    margin-top: 30px;
+    padding: 0 !important;
+    font-weight: bold;
+}
+
+.select-language.col.input-field {
+    margin-top: 34px;
+}
+
+.subtitle-language-selector {
+    display: none;
+}
+
+.subtitle-editor-title {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.subtitle-editor-frame {
+    overflow-y: scroll;
+    max-height: 300px;
+    display: none;
+}
+
+.subtitle-wrapper {
+    border-left: 3px solid #0A72CC;
+    margin-bottom: 15px;
+}
+
+.subtitle-input-text {
+    width: 90%;
+    height: 44px;
+    resize: none;
+    box-sizing: border-box;	
+    border: 1px solid #777777;
+    border-radius: 4px;
+    padding: 4px;
+    margin: 5px 0 0 10px;
+    font-family: 'Open Sans';
+    font-size: 14px;
+}
+
+.subtitle-text {
+    width: 90%;
+    border-radius: 4px;
+    background-color: #EDEDED;
+    padding: 4px;
+    margin: 5px 0 0 10px;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    border: 1px solid rgba(0,0,0,0);
+    position: relative;
+}
+
+.subtitle-text:focus {
+    box-sizing: border-box;		
+    border: 1px solid #EDEDED;		
+    background-color: #FFFFFF;
+    box-shadow: 0 0 2px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.12), 0 0 4px 0 rgba(0,0,0,0.12), 0 4px 4px 0 rgba(0,0,0,0.12);
+    outline: none;
+}
+
+.subtitle-text:focus .edit-subtitle {
+    width: 21px;
+    height: 21px;
+    top: 0;
+    right: -12px;
+    margin-left: -8px;
+    margin-top: -10px;
+    border-radius: 50% 50%;
+    background-color: #0A72CC;
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='12px' height='13px' viewBox='0 0 12 13' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch --%3E%3Ctitle%3Eedit icon%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cdefs%3E%3C/defs%3E%3Cg id='Backend' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='subtitle-edit' transform='translate(-206.000000, -8.000000)' fill='%23FFFFFF'%3E%3Cg id='hover' transform='translate(6.000000, 4.000000)'%3E%3Cg id='Edit-icon' transform='translate(195.000000, 0.000000)'%3E%3Cpath d='M11.8259267,6.68533782 L14.8263774,9.68578843 L8.31099677,16.201169 L5.63585514,16.4964717 C5.27772459,16.536091 4.97516641,16.2332811 5.01499175,15.8751505 L5.31265187,13.198132 L11.8259267,6.68533782 Z M16.6821697,6.23860731 C17.1216218,6.67805939 17.1216218,7.39056685 16.6821697,7.83024781 L15.356764,9.15563069 L12.3563134,6.15518008 L13.6816962,4.8297972 C14.1211483,4.39034512 14.8338847,4.39034512 15.2733367,4.8297972 L16.6821697,6.23860731 Z' id='edit-icon'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+}
+
+.subtitle-timing {
+    font-size: 12px;
+    line-height: 17px;
+    font-weight: 600;
+    color: #4d4d4d;
+    margin-left: 10px;
+}
+
+#add-subtitle {
+    display: none;
+}
+
+#pause-video-while-typing {
+    margin-top: 5px;
+}
+
+[type="checkbox"]+span:not(.lever) {
+    padding-left: 25px !important;
+}
+
+[type="checkbox"]:checked+span:not(.lever):before {
+    border-right: 2px solid #0A72CC !important;
+    border-bottom: 2px solid #0A72CC !important;
+}
+
+#subtitle-timeline-wrapper {
+    display: none;
+}
+
+.subtitle-pause-while-typing-wrapper {
+    display: none;
+}
+
+.subtitle-preview-save-button-wrapper {
+    display: none;
+    overflow: auto;
+}
+
+#subtitle-embed {
+    margin-top: 30px;
+}

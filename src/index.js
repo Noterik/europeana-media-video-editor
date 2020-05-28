@@ -20,7 +20,7 @@ require('./icons/pause.svg');
 require('./icons/check.svg');
 require('./icons/empty.svg');
 
-const EuropeanaMediaPlayer = require("europeanamediaplayer").default;
+const EuropeanaMediaPlayer = require("EuropeanaMediaPlayer");
 const languages = require("./components/languages/lang.js").default.locales;
 const he = require('he'); 
 
@@ -46,6 +46,9 @@ var pauseVideoWhileTyping = false;
 var unsavedSubtitleChanges = false;
 var previousSubtitleLanguage = "en-GB";
 var embedId;
+var user;
+var hsh;
+var initSliderUpdateDone = false;
 
 const timelineWindowViewPortDuration = 180000;
 const subtitleTimelineWindowViewPortDuration = 15000;
@@ -57,27 +60,37 @@ window.addEventListener('load', () => {
 
   var hash = window.location.hash;
   if (hash.length > 1) {
-    hash = hash.indexOf("?") > -1 ? hash.substring(0, hash.indexOf("?")) : hash;
+    //hash = hash.indexOf("?") > -1 ? hash.substring(0, hash.indexOf("?")) : hash;
     tabsInstance.select(hash.substr(1));
   }
 
   var elems = document.querySelectorAll('select');
   var instances = M.FormSelect.init(elems, tabOptions);
   
-  videoObj = {};
+  videoObj = {"manifest": "https://beta.qandr.eu/euscreenxlmanifestservlet/?videoid=http://stream18.noterik.com/progressive/stream18//domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23/rawvideo/1/raw.mp4&ticket=50680918&duration=41&maggieid=/domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23"};
   //videoObj = { source: "EUS_C8664133069B4AC7B5AC68549FD44510", duration: 318, id: "testvideo", width: "640", height: "360"};
   videoMetadata = videoObj;
   //videoObj = {manifest: "https://iiif.europeana.eu/presentation/2051906/data_euscreenXL_http___openbeelden_nl_media_90589/manifest?format=3&wskey=api2demo"};
 
   //options = { mode: "player", manifest: "https://iiif.europeana.eu/presentation/2051906/data_euscreenXL_http___openbeelden_nl_media_90589/manifest?format=3"};
   //options = {mode: "player", manifest: "https://videoeditor.noterik.com/manifest/createmanifest.php?src=http://openbeelden.nl/files/09/9983.9970.WEEKNUMMER403-HRE0001578C.mp4&duration=86360&id=http://openbeelden.nl/files/09/9983.9970.WEEKNUMMER403-HRE0001578C.mp4"};
-  options = {mode: "player", manifest: "https://iiif.europeana.eu/presentation/08609/fe9c5449_9522_4a70_951b_ef0b27893ae9/manifest?format=3&wskey=api2demo", editor: "https://video-editor.eu", language: "nl"};
-  //options = {mode: "player", manifest: "https://beta.qandr.eu/euscreenxlmanifestservlet/?videoid=http://stream4.noterik.com/progressive/stream4/domain/euscreen/user/eu_ina/video/1059/rawvideo/1/raw.mp4&ticket=54064640&duration=318&maggieid=/domain/euscreenxl/user/eu_ina/video/EUS_0EBCBF356BFC4E12A014023BA41BD98C", editor: "https://video-editor.eu", language: "nl"};
+  //options = {mode: "player", manifest: "https://iiif.europeana.eu/presentation/08609/fe9c5449_9522_4a70_951b_ef0b27893ae9/manifest?format=3&wskey=api2demo", editor: "https://video-editor.eu", language: "nl"};
+  options = {mode: "player", manifest: "https://beta.qandr.eu/euscreenxlmanifestservlet/?videoid=http://stream18.noterik.com/progressive/stream18//domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23/rawvideo/1/raw.mp4&ticket=50680918&duration=41&maggieid=/domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23"};
+  //options = { mode: "player", manifest: "https://iiif.europeana.eu/presentation/9200369/webclient_DeliveryManager_pid_8412047_custom_att_2_simple_viewer/manifest?format=3&wskey=api2demo", editor: "https://video-editor.eu", language: "nl"};
+  //options = { mode: "player", "manifest": "https://iiif.europeana.eu/presentation/22/_72315/manifest?format=3&wskey=api2demo", editor: "https://video-editor.eu", language: "nl"}
+  
   if (getAllUrlParams(window.location.href).manifest != undefined) {
     options.manifest = decodeURIComponent(getAllUrlParams(window.location.href).manifest);
+    videoObj.manifest = decodeURIComponent(getAllUrlParams(window.location.href).manifest);
   }
   if (getAllUrlParams(window.location.href).mode != undefined) {
     options.mode = getAllUrlParams(window.location.href).mode;
+  }
+  if (getAllUrlParams(window.location.href).user != undefined) {
+    user = getAllUrlParams(window.location.href).user;
+  }
+  if (getAllUrlParams(window.location.href).hash != undefined) {
+    hsh = getAllUrlParams(window.location.href).hash;
   }
 
   getEmbedId();
@@ -96,7 +109,7 @@ window.addEventListener('load', () => {
       var timeupdate;
 
       player.avcomponent.on('play', function() {
-        timeupdate = setInterval(() => timeUpdate(player.avcomponent.getCurrentTime() * 1000, "annotation-player"), 50);
+        timeupdate = setInterval(() => timeUpdate(player.avcomponent._getCurrentCanvas()._canvasClockTime * 1000, "annotation-player"), 50);
       });
 
       player.avcomponent.on('pause', function() {
@@ -137,6 +150,10 @@ window.addEventListener('load', () => {
 
         setEmbedResolution();
 
+        if (player.getMediaType(player) == "Video") {
+          $("#embed-select-resolution").css({display: "flex" });
+        }
+  
         loadEmbedSlider();
         loadTimeline();
 
@@ -165,7 +182,7 @@ window.addEventListener('load', () => {
       var subtitleTimeupdate;
 
       player.avcomponent.on('play', function() {
-        subtitleTimeupdate = setInterval(() => timeUpdate(player.avcomponent.getCurrentTime() * 1000, "subtitle-player"), 50);
+        subtitleTimeupdate = setInterval(() => timeUpdate(player.avcomponent._getCurrentCanvas()._canvasClockTime * 1000, "subtitle-player"), 50);
       });
 
       player.avcomponent.on('pause', function() {
@@ -177,6 +194,9 @@ window.addEventListener('load', () => {
 
         //load subtitles
         getSubtitles();
+
+        //load bookmarks
+        getBookmarks();
 
         player.avcomponent.canvasInstances[0]._$canvasTimelineContainer.on('slide', function(event, ui) {
           timeUpdate(ui.value * 1000, "subtitle-player");
@@ -230,7 +250,7 @@ window.addEventListener('load', () => {
     //update other tabs also with temporal information from the embed tab
     let id = $(this).attr('id');
     if (temporal != "" && id.indexOf("embed-embed") > 0) {
-      ["annotation", "playlist"].forEach(function(t) {
+      ["annotation", "playlist", "subtitle"].forEach(function(t) {
         //take the other tabs correct type
         type = $("#"+id.replace("embed-embed", "embed-"+t)).val();
         
@@ -380,15 +400,15 @@ window.addEventListener('load', () => {
   let modalOptions = {"startingTop": "15%", "endingTop": "15%"};
   var modalInstances = M.Modal.init(elems, modalOptions);
 
-  $(".bookmark-link").on('click', function() {
+  $(document).on('click', ".bookmark-link", function() {
     let manifest = $(this).data("manifest");
     let title = $(this).data("title");
  
     var modalInstance = M.Modal.getInstance(document.querySelectorAll('.modal')[0]);
     modalInstance.close();
 
-    $('<div class="playlist-video"><div class="player-wrapper" data-manifest="'+manifest+'"></div><div class="playlist video-title-playlist semibold">'+title+'</div></div>')
-.insertAfter($('.playlist-video').last());
+    $('<div class="playlist-video"><div class="playlist video-title-playlist semibold">'+title+'<a class="delete-playlist-item right semibold waves-effect waves-blue btn-flat" class="delete-playlist-item"><i class="delete-icon" aria-hidden="true"></a></div><div class="player-wrapper" data-manifest="'+manifest+'"></div></div>')
+.insertBefore($('.playlist-video-add'));
 
     savePlaylist();
 
@@ -433,8 +453,8 @@ window.addEventListener('load', () => {
 
     //get current time position
     let playerObject = players.find(player => player.id == "subtitle-player");  
-    let starttime = playerObject.player.avcomponent.getCurrentTime() * 1000;
-    let endtime = (playerObject.player.avcomponent.getCurrentTime() * 1000) + 3000;
+    let starttime = playerObject.player.avcomponent._getCurrentCanvas()._canvasClockTime * 1000;
+    let endtime = (playerObject.player.avcomponent._getCurrentCanvas()._canvasClockTime * 1000) + 3000;
 
     let subtitleId = generateAnnotationId();
 
@@ -444,7 +464,7 @@ window.addEventListener('load', () => {
       if (existingSubtitle) {
         //set focus on existing subtitle
         $(".subtitle-wrapper[data-id='"+existingSubtitle.id+"'] > div.subtitle-text").hide();
-        $(".subtitle-wrapper[data-id='"+existingSubtitle.id+"'] > textarea.subtitle-input-text").show().focus(); 
+        $(".subtitle-wrapper[data-id='"+existingSubtitle.id+"'] > textarea.subtitle-input-text").show().focus();
         return;
       }
 
@@ -678,6 +698,32 @@ window.addEventListener('load', () => {
     window.open(playlistPreviewUrl, "popupWindow", "width="+width+",height="+height+",scrollbars=yes");
   });
 
+  $("#embed .preview-button").on('click', function() {
+    let embedPreviewUrl = "https://embd.eu/"+embedId;
+  
+    let temporal = "";
+  
+    if (temporalRange[0] != 0) {
+      temporal += "?t="+temporalRange[0];
+    }
+    if (temporalRange[1] != videoMetadata.duration && temporalRange[1] != -1) {
+      if (temporal.length == 0) {
+        temporal += "?t=,";
+      } else {
+        temporal += ",";
+      }
+      temporal += temporalRange[1];
+    }
+  
+    embedPreviewUrl += temporal;
+  
+    let resolution = $("#resolution").val();
+    let width = parseInt(resolution.substring(0,resolution.indexOf("x"))) + 50;
+    let height = parseInt(resolution.substring(resolution.indexOf("x")+1)) + 150;
+  
+    window.open(embedPreviewUrl, "popupWindow", "width="+width+",height="+height+",scrollbars=yes");
+  });
+
   $(".playlist-video .player-wrapper").attr({"data-manifest": options.manifest});
 
   //get playlist entries
@@ -693,6 +739,12 @@ window.addEventListener('load', () => {
 
     storeSubtitles();
     unsavedSubtitleChanges = false;
+  });
+
+
+  $(document).on('click', ".delete-playlist-item", function() {
+    $(this).parent().parent().remove();
+    savePlaylist();
   });
 });
 
@@ -777,10 +829,15 @@ function loadEmbedSlider() {
         $('.noUi-handle-upper > .noUi-tooltip > span').text(formatTime(values[handle], false));
         temporalRange[1] = values[handle] / 1000;
         $("#copy-embed-embed-type").trigger('change');
+        if (initSliderUpdateDone) {
+          timeUpdate(values[handle], "embed-timeline");
+        } else {}
+        initSliderUpdateDone = true;
     } else {
         $('.noUi-handle-lower > .noUi-tooltip > span').text(formatTime(values[handle], false));
         temporalRange[0] = values[handle] / 1000;
         $("#copy-embed-embed-type").trigger('change');
+        timeUpdate(values[handle], "embed-timeline");
     }
   });
 
@@ -931,7 +988,21 @@ function loadSubtitleTimeline() {
   });
 
   subtitleTimeline.itemsData.on("update", function(event, properties) {
+    let subtitleEditId = "";
+    let subtitleEditText = "";
+    $(".subtitle-input-text").each(function() {
+      if ($(this).is(":visible")) {
+        subtitleEditId = $(this).parent().data("id");
+        subtitleEditText = stripInput($(this).val());
+      }
+    });
+
     subtitleItemUpdate({id: properties.data[0].id, start: properties.data[0].start, end: properties.data[0].end});
+
+    if (subtitleEditId !== "") {
+      $(".subtitle-wrapper[data-id='"+subtitleEditId+"'] > div.subtitle-text").hide();
+      $(".subtitle-wrapper[data-id='"+subtitleEditId+"'] > textarea.subtitle-input-text").val(subtitleEditText).show().focus();
+    }
   });
 
   subtitleTimeline.itemsData.on("remove", function(event, properties, senderId) {
@@ -1089,7 +1160,7 @@ function timeUpdate(data, source) {
     let type = source.substring(0, source.indexOf("-"));
 
     let playerObject = players.find(player => player.id == type+"-player");
-    playerObject.player.avcomponent.setCurrentTime(time / 1000);
+    playerObject.player.avcomponent._getCurrentCanvas().setCurrentTime(time / 1000);
   }
 }
 
@@ -1168,7 +1239,7 @@ function getEmbedId() {
   .then(res => res.json())
   .then(response => {
       let embedString = "https://embd.eu/"+response.embed;
-      ['embed', 'annotation', 'playlist'].forEach(type => $("#copy-embed-"+type+"-input").val(embedString));
+      ['embed', 'annotation', 'playlist', 'subtitle'].forEach(type => $("#copy-embed-"+type+"-input").val(embedString));
 
       embedId = response.embed;
   })
@@ -1568,7 +1639,7 @@ function savePlaylist() {
   let entries = [];
   $(".playlist-video .player-wrapper").each(function(index) {
     let id = $(this).data("id") == undefined ? generateAnnotationId() : $(this).data("id");
-    let title = $(this).next().text();
+    let title = $(this).prev().text();
     entries.push({"id": id,"playlisttitle": name,"title": title, "vid": $(this).data("manifest"), "position": index+1});
   });
 
@@ -1607,11 +1678,16 @@ function getPlaylist() {
 
         $("#playlistname-input").val(entries[0].playlisttitle);
 
-        entries.forEach(function(entry) {        
-          $('<div class="playlist-video"><div id="'+entry.id+'" class="player-wrapper" data-id="'+entry.id+'" data-manifest="'+entry.vid+'"></div><div class="playlist video-title-playlist semibold">'+entry.title+'</div></div>')
-  .insertBefore($('.playlist-video-add'));
+        entries.forEach(function(entry) {   
+          if (entry.vid == options.manifest)  {
+            $('<div class="playlist-video"><div class="playlist video-title-playlist semibold">'+entry.title+'</div><div id="'+entry.id+'" class="player-wrapper" data-id="'+entry.id+'" data-manifest="'+entry.vid+'"></div></div>')
+    .insertBefore($('.playlist-video-add'));
+          } else {
+            $('<div class="playlist-video"><div class="playlist video-title-playlist semibold">'+entry.title+'<a class="delete-playlist-item right semibold waves-effect waves-blue btn-flat"><i class="delete-icon" aria-hidden="true"></a></div><div id="'+entry.id+'" class="player-wrapper" data-id="'+entry.id+'" data-manifest="'+entry.vid+'"></div></div>')
+    .insertBefore($('.playlist-video-add'));
+          }
         });
-
+        
         $('.player-wrapper:empty').each(function(index) {
           let vObj = {manifest: $(this).data("manifest")};
           let opt = {mode: "player"};
@@ -1660,7 +1736,9 @@ function previewSubtitles() {
       temporal += temporalRange[1];
     }
 
-    subtitlePreviewUrl += temporal;
+    let language = $("#subtitle-language").val().substring(0,2);
+
+    subtitlePreviewUrl += temporal + "#"+language;
 
     let resolution = $("#resolution").val();
     let width = parseInt(resolution.substring(0,resolution.indexOf("x"))) + 50;
@@ -1683,4 +1761,39 @@ function saveSubtitle(that) {
   subtitles[subtitles.findIndex(s => s.id === subtitle.id)] = subtitle;
   $(that).next().text(text);
   $(that).next().show();
+}
+
+function getBookmarks() {
+  if (user !== undefined && hsh !== undefined) {
+    let link = "https://video-editor.eu/api/bookmarks/user/"+encodeURIComponent(user)+"/hash/"+encodeURIComponent(hsh);
+    fetch(
+        link, { 
+            method: 'GET',
+            mode: 'cors',
+            headers: { "Content-Type": "application/json; charset=utf-8" }
+        })
+    .then(res => res.json())
+    .then(response => {
+        let bookmarks = response.bookmarks;
+        let i = 0;
+        let bookmarkhtml = "";
+
+        bookmarks.forEach(function(bookmark) {
+          if(i%2 == 0) {
+            bookmarkhtml += '<div class="row">';
+          }
+          bookmarkhtml += '<div class="col s6 bookmark"><a href="#" class="bookmark-link" data-manifest="'+bookmark.manifest+'" data-title="'+bookmark.title+'"><div class="bookmark-image-wrapper"><div class="bookmark-overlay"></div><img class="bookmark-image" src="'+bookmark.thumbnail+'"></div><div class="bookmark-title semibold">'+bookmark.title+'</div></a></div>';
+          if(i%2 == 1) {
+            bookmarkhtml += '</div>';
+          }
+          i++;
+        });
+        $("#bookmarks").append(bookmarkhtml);
+        
+    })
+    .catch(err => {
+        console.error("Could not retrieve bookmarks");
+        console.log(err);
+    });
+  }
 }

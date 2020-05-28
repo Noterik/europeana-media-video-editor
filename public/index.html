@@ -1,0 +1,363 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Europeana video editor</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="/index.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" href="//materializecss.com/extras/noUiSlider/nouislider.css">
+  <script src="/bundle.js"></script>
+</head>
+<body>
+<div id="header" class="container">
+  <div class="row">
+    <div class="col">
+      <div id="header-title">Europeana Unified Media Player</div>
+      <div id="header-subtitle">Video editor</div>
+    </div>
+  </div>
+</div>
+
+<div id="wrapper" class="container">
+  <div class="row">
+    <div id="content-card" class="card-panel white">
+      <div class="row">
+        <div class="col s12">        
+          <a class="white-button waves-effect waves-blue btn right" onclick="window.close();return false;"><i class="material-icons left">close</i>Exit</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col s2" id="embed-tab"><a href="#embed" class="waves-effect">Embed</a></li>
+            <li class="tab col s2" id="annotation-tab"><a href="#annotation" class="waves-effect">Annotation</a></li>
+            <li class="tab col s2" id="playlist-tab"><a href="#playlist" class="waves-effect">Playlist</a></li>
+            <li class="tab col s2" id="subtitles-tab"><a href="#subtitles" class="waves-effect">Subtitles</a></li>
+          </ul>
+        </div>
+        <div id="tabs-line" class="col s12"></div>
+        <div id="embed" class="col s12"> 
+          <div class="row">
+            <div class="col s12 video-title"></div>
+            <div class="col s12 player-wrapper" id="embed-player"></div>
+          </div>
+          <div class="row">
+            <div class="col s6">
+              <div class="row" id="embed-select-time">
+                <div class="bold-item-text">
+                  Start at
+                </div>
+                <div class="embed-start-end-slider">
+                  <div id="embed-slider">
+                    <div id="embed-slider-placeholder" style="flex: 1;"></div>
+                  </div>
+                </div>
+                <div class="bold-item-text">
+                  End at
+                </div>
+              </div>
+            </div>
+            <div class="col s6">
+              <div class="right" id="embed-select-resolution">
+                <div class="bold-item-text">
+                  Video size
+                </div>
+                <div class="input-field">
+                  <select id="resolution">
+                    <!--<option value="640x360" selected data-icon="check.svg">640x360</option>
+                    <option value="960x540" data-icon="empty.svg">960x540</option>
+                    <option value="1280x720" data-icon="empty.svg">1280x720</option>-->
+                  </select>
+                </div>
+                <!--<div class="btn blue-button">
+                  Done
+                </div>-->
+              </div> 
+            </div>
+          </div>
+          <div class="row bottom row">
+            <div class="col s6"></div>
+            <div class="col s6">
+              <div class="right">
+                <input type="text" id="copy-embed-embed-input" class="input-text" readonly value="" size="21">
+                <div class="type-embed">
+                  <select id="copy-embed-embed-type">
+                    <option value="link" selected>Link</option>
+                    <option value="iframe">Iframe</option>
+                    <option value="oembed">Oembed</option>
+                    <!--<option value="manifest">Manifest</option>-->
+                  </select>
+                </div>
+                <div id="copy-embed-embed" class="waves-effect waves-blue btn copy-button">Copy</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row right bottom-row">
+            <div class="col s6"></div>
+            <div class="col s6">
+              <div>
+                <a class="right semibold preview-button"><i class="preview-icon" aria-hidden="true"></i>Preview</a>
+              </div>
+            </div>
+            <!--<div class="col s12">
+                <div class="btn blue-button">Finalize</div>
+            </div>-->
+          </div>
+        </div>
+        <div id="annotation" class="col s12">
+          <form id="annotation-form">
+            <div class="row">
+              <div class="col s12 video-title"></div>
+              <div class="col s8">
+                <div class="player-wrapper" id="annotation-player"></div>
+                <div id="annotation-timeline-wrapper" class="timeline-wrapper">
+                  <div id="annotation-timeline-inner-wrapper" class="timeline-inner-wrapper">
+                    <div id="annotation-timeline"></div>
+                  </div>                
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="input-field select-annotation-type">
+                  <select class="validate" id="annotationtype" required>
+                    <option value="" disabled selected>Select an annotation type</option>
+                    <option value="speech" data-icon="speech.svg">Speech bubble</option>
+                    <option value="note" data-icon="note.svg">Note</option>
+                    <option value="title" data-icon="title.svg">Title</option>
+                    <option value="spotlight" data-icon="spotlight.svg">Spotlight</option>
+                    <option value="label" data-icon="label.svg">Label</option>
+                    <option value="pause" data-icon="pause.svg">Pause</option>
+                  </select>
+                </div>
+                <div class="bold-item-text annotation-timing-text">
+                  Timing
+                </div>
+                <div class="col s6 annotation-timing starttiming">
+                  <button type="button" class="step-button" title="Step backward">
+                      <i class="stepbackward" aria-hidden="true"></i>Step backward
+                  </button>
+                  <input type="text" size="10" id="annotationtiming-start" class="annotationtiming-element" value="00:00.00" pattern="((?:2[0-3]|[01]?[0-9]):)?[0-5][0-9]:[0-5][0-9].[0-9]{2}">
+                  <div class="annotationtiming-updown-wrapper">
+                    <button type="button" class="step-button annotationtiming-updown" id="startupbutton" title="Step up">
+                      <i id="startup" class="stepup"></i>Step up
+                    </button>
+                    <button type="button" class="step-button annotationtiming-updown" id="startdownbutton" title="Step down">
+                      <i id="startdown" class="stepdown"></i>Step down
+                    </button>
+                  </div>
+                </div>
+                <div class="col s6 annotation-timing endtiming">
+                  <button type="button" class="step-button" title="Step forward">
+                    <i class="stepforward" aria-hidden="true"></i>Step forward
+                  </button>
+                  <div class="annotationtiming-updown-wrapper right">
+                    <button type="button" class="step-button annotationtiming-updown" id="endupbutton" title="Step up">
+                      <i id="endup" class="stepup"></i>Step up
+                    </button>
+                    <button type="button" class="step-button annotationtiming-updown" id="enddownbutton" title="Step down">
+                      <i id="enddown" class="stepdown"></i>Step down
+                    </button>
+                  </div>
+                  <input type="text" size="10" id="annotationtiming-end" class="annotationtiming-element right" value="00:10.00" pattern="((?:2[0-3]|[01]?[0-9]):)?[0-5][0-9]:[0-5][0-9].[0-9]{2}">
+                </div>
+                <div>
+                  <textarea class="annotation-input-text validate" id="annotationtext" placeholder="Enter your annotation here" maxlength="100"></textarea>
+                </div>
+                <div>
+                  <a class="white-button waves-effect waves-blue btn right semibold" id="annotation-save-button">Save</a>
+                  <a class="right semibold waves-effect waves-blue btn-flat" id="annotation-cancel-button">Cancel</a>
+                </div>
+                <div id="annotation-select">
+                  <div class="input-field select-annotation">
+                    <select class="validate" id="annotationlist">
+                      <option value="" disabled selected>Select an annotation</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <a class="right semibold waves-effect waves-blue btn-flat" id="annotation-delete-button"><i class="delete-icon" aria-hidden="true"></i>Delete</a>
+                </div>
+                <div id="annotation-embed">
+                  <div class="right">
+                      <input type="text" id="copy-embed-annotation-input" class="input-text" readonly value="" size="9">
+                      <div class="type-embed">
+                        <select id="copy-embed-annotation-type">
+                          <option value="link" selected>Link</option>
+                          <option value="iframe">Iframe</option>
+                          <option value="oembed">Oembed</option>
+                          <!--<option value="manifest">Manifest</option>-->
+                        </select>
+                      </div>
+                      <div id="copy-embed-annotation" class="waves-effect waves-blue btn copy-button">Copy</div>
+                  </div>
+                </div>
+                <div>
+                    <a class="right semibold preview-button"><i class="preview-icon" aria-hidden="true"></i>Preview</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div id="playlist" class="col s12">
+          <div class="row" style="margin-top:20px;">
+            <div class="col s6">
+              <div class="playlist-name-box">
+                <div class="playlist-name-title bold">
+                  Playlist Name
+                </div>
+                <div class="input-field">
+                    <input placeholder="Enter name ..." id="playlistname-input" type="text" data-length="150" autofocus>
+                    <div id="playlistname"></div>
+                </div>
+                <div class="right bold waves-effect waves-blue btn-flat" id="playlist-save-name">
+                  Save
+                </div>
+                <div class="right bold waves-effect waves-blue btn-flat" id="playlist-edit-name">
+                  Edit
+                </div>
+              </div>  
+              <div id="playlist-embed">
+                  <div class="right">
+                      <input type="text" id="copy-embed-playlist-input" class="input-text" readonly value="" size="25">
+                      <div class="type-embed">
+                        <select id="copy-embed-playlist-type">
+                          <option value="link" selected>Link</option>
+                          <option value="iframe">Iframe</option>
+                          <option value="oembed">Oembed</option>
+                          <!--<option value="manifest">Manifest</option>-->
+                        </select>
+                      </div>
+                      <div id="copy-embed-playlist" class="waves-effect waves-blue btn copy-button">Copy</div>
+                  </div>
+              </div>
+              <div>
+                  <a class="right semibold preview-button"><i class="preview-icon" aria-hidden="true"></i>Preview</a>
+              </div>
+            </div>
+            <div class="col s6">
+              <div class="playlist-video">
+                <div class="playlist video-title video-title-playlist semibold"></div>
+                <div class="player-wrapper"></div>
+              </div>
+              <div class="playlist-video-add">
+                <a class="white-button waves-effect waves-blue btn right semibold modal-trigger" title="Add video" data-target="modal1">
+                  Add video
+                </a>
+                  <!-- Modal Structure -->
+                  <div id="modal1" class="modal modal-fixed-footer">
+                      <div class="modal-content" id="bookmarks">
+                        <h4>Add a bookmarked video</h4>
+                      </div>
+                      <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-blue btn-flat">Close</a>
+                      </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="subtitles" class="col s12">
+            <div class="row">
+              <div class="col s12 video-title"></div>
+            </div>
+            <div class="row">
+              <div class="col s4">
+                <div class="bold">Video language</div>
+                <div class="item-language"></div>
+                <div>
+                    <a class="white-button waves-effect waves-blue btn right" id="createsubtitle">Create subtitle</a>
+                </div>
+                <div class="subtitle-language-selector">
+                  <div class="col s4 select-language">
+                    Select language
+                  </div>
+                  <div class="col s8 select-language input-field">
+                    <select id="subtitle-language">
+                      <option value="bg-BG">Български</option>
+                      <option value="cs-CZ">Čeština</option>
+                      <option value="da-DK">Dansk</option>
+                      <option value="de-DE">Deutsch</option>
+                      <option value="el-GR">Ελληνικά</option>
+                      <option value="en-GB" selected>English</option>
+                      <option value="es-ES">Español</option>
+                      <option value="et-EE">Eesti</option>
+                      <option value="eu-ES">Euskara</option>
+                      <option value="fi-FI">Suomi</option>
+                      <option value="fr-FR">Français</option>
+                      <option value="ga-IE">Gaeilge</option>
+                      <option value="hr-HR">Hrvatski</option>
+                      <option value="hu-HU">Magyar</option>
+                      <option value="it-IT">Italiano</option>
+                      <option value="lt-LT">Lietuvių</option>
+                      <option value="lv-LV">Latviešu</option>
+                      <option value="mt-MT">Malti</option>
+                      <option value="nl-NL">Nederlands</option>
+                      <option value="pl-PL">Polski</option>
+                      <option value="pt-PT">Português</option>
+                      <option value="ro-RO">Română</option>
+                      <option value="sk-SK">Slovenčina</option>
+                      <option value="sl-SI">Slovenščina</option>
+                      <option value="sv-SE">Svenska</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="bold subtitle-editor-title">
+                  Subtitle editor
+                </div>
+                <div class="subtitle-editor-frame">
+                                      
+                </div>
+                <a class="white-button waves-effect waves-blue btn left semibold" id="add-subtitle">Add Subtitle</a>
+                <!--<button type="button" class="add-button right" id="add-subtitle" title="Add subtitle">
+                  <i class="add-button-inner" aria-hidden="true"></i>Add subtitle
+                </button>-->
+              </div>
+              <div class="col s8">
+                  <div class="player-wrapper" id="subtitle-player"></div>
+                  <div id="subtitle-timeline-wrapper" class="timeline-wrapper">
+                    <div id="subtitle-timeline-inner-wrapper" class="timeline-inner-wrapper">
+                      <div id="subtitle-timeline"></div>
+                    </div>                
+                  </div>
+                  <div class="subtitle-pause-while-typing-wrapper">
+                    <label>
+                      <input type="checkbox" id="pause-while-typing"/>
+                      <span>Pause video while typing</span>
+                    </label>
+                  </div>
+                  <div class="subtitle-preview-save-button-wrapper">
+                      <div class="btn blue-button left" id="downloadsubtitle">Download</div>
+                    <div class="btn blue-button right" id="saveSubtitlesBtn">Save</div>
+                    <a class="right semibold preview-button"><i class="preview-icon" aria-hidden="true"></i>Preview</a>
+                </div>
+                <div id="subtitle-embed">
+                  <div class="right">
+                      <input type="text" id="copy-embed-subtitle-input" class="input-text" readonly value="" size="25">
+                      <div class="type-embed">
+                        <select id="copy-embed-subtitle-type">
+                          <option value="link" selected>Link</option>
+                          <option value="iframe">Iframe</option>
+                          <option value="oembed">Oembed</option>
+                          <!--<option value="manifest">Manifest</option>-->
+                        </select>
+                      </div>
+                      <div id="copy-embed-subtitle" class="waves-effect waves-blue btn copy-button">Copy</div>
+                  </div>
+              </div>
+              </div>
+            </div>
+        </div>
+      </div>      
+    </div>
+  </div>
+</div>
+
+<script src="//materializecss.com/extras/noUiSlider/nouislider.js"></script>
+</body>
+</html>
