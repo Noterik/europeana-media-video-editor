@@ -41,9 +41,9 @@ var manifestMetadata = {};
 var videoMetadata = {};
 var temporalRange = [0,-1];
 var subtitles;
+var subtitleLanguages;
 var subtitleTrack;
 var pauseVideoWhileTyping = false;
-var unsavedSubtitleChanges = false;
 var previousSubtitleLanguage = "en-GB";
 var embedId;
 var user;
@@ -67,18 +67,23 @@ window.addEventListener('load', () => {
   var elems = document.querySelectorAll('select');
   var instances = M.FormSelect.init(elems, tabOptions);
   
-  videoObj = {"manifest": "https://beta.qandr.eu/euscreenxlmanifestservlet/?videoid=http://stream18.noterik.com/progressive/stream18//domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23/rawvideo/1/raw.mp4&ticket=50680918&duration=41&maggieid=/domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23"};
+  //videoObj = {"manifest": "https://beta.qandr.eu/euscreenxlmanifestservlet/?videoid=http://stream18.noterik.com/progressive/stream18//domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23/rawvideo/1/raw.mp4&ticket=50680918&duration=41&maggieid=/domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23"};
+  videoObj = {"manifest": "https://embd.eu/euscreenxlmanifestservlet/?videoid=https://stream18.noterik.com/progressive/stream18//domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23/rawvideo/1/raw.mp4&ticket=44338097&duration=41&maggieid=/domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23"};
+  //videoObj = {"manifest": "https://iiif.europeana.eu/presentation//2059211/dyn_portal_index_seam_page_alo_aloId_11785/manifest?format=3"};
   //videoObj = { source: "EUS_C8664133069B4AC7B5AC68549FD44510", duration: 318, id: "testvideo", width: "640", height: "360"};
+  //videoObj = {"manifest": "https://iiif.europeana.eu/presentation/2051914/data_euscreenXL_IL5000041487/manifest?format=3"};
   videoMetadata = videoObj;
   //videoObj = {manifest: "https://iiif.europeana.eu/presentation/2051906/data_euscreenXL_http___openbeelden_nl_media_90589/manifest?format=3&wskey=api2demo"};
 
   //options = { mode: "player", manifest: "https://iiif.europeana.eu/presentation/2051906/data_euscreenXL_http___openbeelden_nl_media_90589/manifest?format=3"};
   //options = {mode: "player", manifest: "https://videoeditor.noterik.com/manifest/createmanifest.php?src=http://openbeelden.nl/files/09/9983.9970.WEEKNUMMER403-HRE0001578C.mp4&duration=86360&id=http://openbeelden.nl/files/09/9983.9970.WEEKNUMMER403-HRE0001578C.mp4"};
   //options = {mode: "player", manifest: "https://iiif.europeana.eu/presentation/08609/fe9c5449_9522_4a70_951b_ef0b27893ae9/manifest?format=3&wskey=api2demo", editor: "https://video-editor.eu", language: "nl"};
-  options = {mode: "player", manifest: "https://beta.qandr.eu/euscreenxlmanifestservlet/?videoid=http://stream18.noterik.com/progressive/stream18//domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23/rawvideo/1/raw.mp4&ticket=50680918&duration=41&maggieid=/domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23"};
+  //options = {mode: "player", manifest: "https://beta.qandr.eu/euscreenxlmanifestservlet/?videoid=http://stream18.noterik.com/progressive/stream18//domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23/rawvideo/1/raw.mp4&ticket=50680918&duration=41&maggieid=/domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23"};
+  options = {mode: "player", manifest: "https://embd.eu/euscreenxlmanifestservlet/?videoid=https://stream18.noterik.com/progressive/stream18//domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23/rawvideo/1/raw.mp4&ticket=44338097&duration=41&maggieid=/domain/euscreenxl/user/eu_luce/video/EUS_EB001C7794C7B27B6BAA746AB17B6F23"};
+;  //options = {mode: "player", manifest: "https://iiif.europeana.eu/presentation//2059211/dyn_portal_index_seam_page_alo_aloId_11785/manifest?format=3"};
   //options = { mode: "player", manifest: "https://iiif.europeana.eu/presentation/9200369/webclient_DeliveryManager_pid_8412047_custom_att_2_simple_viewer/manifest?format=3&wskey=api2demo", editor: "https://video-editor.eu", language: "nl"};
   //options = { mode: "player", "manifest": "https://iiif.europeana.eu/presentation/22/_72315/manifest?format=3&wskey=api2demo", editor: "https://video-editor.eu", language: "nl"}
-  
+  //options = { mode: "player", "manifest": "https://iiif.europeana.eu/presentation/2051914/data_euscreenXL_IL5000041487/manifest?format=3", editor: "https://video-editor.eu", language: "nl"};
   if (getAllUrlParams(window.location.href).manifest != undefined) {
     options.manifest = decodeURIComponent(getAllUrlParams(window.location.href).manifest);
     videoObj.manifest = decodeURIComponent(getAllUrlParams(window.location.href).manifest);
@@ -175,6 +180,7 @@ window.addEventListener('load', () => {
             }
           }
           
+          $(".item-language-wrapper").show();
           $(".item-language").text(language);
         }
       });
@@ -491,14 +497,14 @@ window.addEventListener('load', () => {
     let inserted = false;
     $(".subtitle-wrapper").each(function() {
       if (starttime < $(this).data("start")) {
-        $('<div class="subtitle-wrapper" data-id="'+subtitleId+'" data-start="'+starttime+'" data-end="'+endtime+'"><div class="subtitle-timing">'+formatTime(starttime, true)+' - '+formatTime(endtime, true)+'</div><textarea class="subtitle-input-text validate" maxlength="100"></textarea><div class="subtitle-text" style="display:none;" tabindex="-1"><div class="edit-subtitle"></div></div></div>')
+        $('<div class="subtitle-wrapper" data-id="'+subtitleId+'" data-start="'+starttime+'" data-end="'+endtime+'"><div class="subtitle-timing">'+formatTime(starttime, true)+' - '+formatTime(endtime, true)+'</div><textarea class="subtitle-input-text validate" maxlength="100"></textarea><div class="subtitle-text" style="display:none;" tabindex="-1"><div class="edit-subtitle"></div><div class="delete-subtitle"></div></div></div>')
         .insertBefore($(this));
         inserted = true;
         return false;
       }
     });
     if (!inserted) {
-      $(".subtitle-editor-frame").append('<div class="subtitle-wrapper" data-id="'+subtitleId+'" data-start="'+starttime+'" data-end="'+endtime+'"><div class="subtitle-timing">'+formatTime(starttime, true)+' - '+formatTime(endtime, true)+'</div><textarea class="subtitle-input-text validate" maxlength="100"></textarea><div class="subtitle-text" style="display:none;" tabindex="-1"><div class="edit-subtitle"></div></div></div>');
+      $(".subtitle-editor-frame").append('<div class="subtitle-wrapper" data-id="'+subtitleId+'" data-start="'+starttime+'" data-end="'+endtime+'"><div class="subtitle-timing">'+formatTime(starttime, true)+' - '+formatTime(endtime, true)+'</div><textarea class="subtitle-input-text validate" maxlength="100"></textarea><div class="subtitle-text" style="display:none;" tabindex="-1"><div class="edit-subtitle"></div><div class="delete-subtitle"></div></div></div>');
     }
 
     $(".subtitle-wrapper[data-id='"+subtitleId+"'] > textarea.subtitle-input-text").trigger("focus");
@@ -537,35 +543,21 @@ window.addEventListener('load', () => {
     }
   }, 'div.edit-subtitle');
 
-  $("#subtitle-language").on("change", function() {  
-    if (unsavedSubtitleChanges) {
-      var unsavedSubtitleChangesDialog = new MatDialog();
-      unsavedSubtitleChangesDialog.confirm(
-        {
-        Text:'You have unsaved changes in the <b>'+languages.find(lang => lang.iso == previousSubtitleLanguage).name+"</b> subtitles.<br/><br/> If you continue these will be discarded.",
-        Buttons:{
-          Ok:{
-            Label:'Ok',
-            Class: 'btn-flat waves-blue'
-          },
-          Cancel:{
-            Label:'Cancel',
-            Class: 'btn-flat waves-blue'
-          }
-        }
-      },
-      function(result){
-        if (result) {
-          unsavedSubtitleChanges = false;
-          changeSubtitleLanguage();
-        } else {
-          $("#subtitle-language").val(previousSubtitleLanguage);
-          $("#subtitle-language").trigger('contentChanged');
-        }
-      });
-    } else {
-      changeSubtitleLanguage();
+  $(document).on({
+    'click': function() {
+      let dataId = $(this).parent().parent().attr("data-id");
+
+      let removedItems = subtitleTimeline.itemsData.remove(dataId);
+
+      if (removedItems.length == 0) {
+        subtitles.splice(subtitles.findIndex(a => a.id === dataId), 1);
+        updateSubtitleEditor(false);
+      }
     }
+  }, 'div.delete-subtitle');
+
+  $("#subtitle-language").on("change", function() {  
+      changeSubtitleLanguage();
   });
 
   //pause on typing subtitles
@@ -581,21 +573,18 @@ window.addEventListener('load', () => {
           let that = this;
           saveSubtitle(that);
         }
+    }, 
+    'keyup': function(event) {
+      if ($(this).val().length >= (parseInt($(this).attr('maxlength')))) {
+        $(this).addClass('invalid-form-value');
+      } else {
+        $(this).removeClass('invalid-form-value');
+      }
     }
   }, 'textarea.subtitle-input-text');
 
   $("#pause-while-typing").on("change", function() {
     pauseVideoWhileTyping = this.checked ? true : false;
-  });
-
-  $("#createsubtitle").on("click", function() {
-    $(".subtitle-language-selector").show();
-    $(".subtitle-editor-title").show();
-    $(".subtitle-editor-frame").show();
-    $("#add-subtitle").show();
-    $("#subtitle-timeline-wrapper").show();
-    $(".subtitle-pause-while-typing-wrapper").show();
-    $(".subtitle-preview-save-button-wrapper").show();
   });
 
   //Create WEBVTT subtitles from user input and offer for download
@@ -646,30 +635,7 @@ window.addEventListener('load', () => {
   });
 
   $("#subtitles .preview-button").on('click', function() {
-    if (unsavedSubtitleChanges) {
-      var unsavedSubtitleChangesDialog = new MatDialog();
-      unsavedSubtitleChangesDialog.confirm(
-        {
-        Text:'You have unsaved changes in the <b>'+languages.find(lang => lang.iso == previousSubtitleLanguage).name+"</b> subtitles.<br/><br/> These are not present in the preview untill you save these.",
-        Buttons:{
-          Ok:{
-            Label:'Ok',
-            Class: 'btn-flat waves-blue'
-          },
-          Cancel:{
-            Label:'Cancel',
-            Class: 'btn-flat waves-blue'
-          }
-        }
-      },
-      function(result){
-        if (result) {
-          previewSubtitles();
-        }
-      });
-    } else {
       previewSubtitles();
-    }
   });
 
   $("#playlist .preview-button").on('click', function() {
@@ -729,22 +695,24 @@ window.addEventListener('load', () => {
   //get playlist entries
   getPlaylist();
 
-  $("#saveSubtitlesBtn").on("click", function() {
-    $(".subtitle-input-text").each(function() {
-      if ($(this).is(":visible")) {
-        let that = this;
-        saveSubtitle(that);
-      }
-    });
-
-    storeSubtitles();
-    unsavedSubtitleChanges = false;
-  });
-
-
   $(document).on('click', ".delete-playlist-item", function() {
     $(this).parent().parent().remove();
     savePlaylist();
+  });
+
+  $(".embed-options-small-tab").on("click", function() {
+    $("#"+$(this).data("target")).val($(this).data("value")).trigger("change");
+
+    $(".embed-options-small-tab").removeClass("embed-options-small-tab-selected");
+    $(this).addClass("embed-options-small-tab-selected");
+  });
+
+  $("#search").on('keydown', function(event) {
+    var keycode = event.keyCode || event.which;
+    //on enter save subtitle
+    if(keycode == '13') {
+      console.log($("#search").val());
+    }
   });
 });
 
@@ -1003,6 +971,7 @@ function loadSubtitleTimeline() {
       $(".subtitle-wrapper[data-id='"+subtitleEditId+"'] > div.subtitle-text").hide();
       $(".subtitle-wrapper[data-id='"+subtitleEditId+"'] > textarea.subtitle-input-text").val(subtitleEditText).show().focus();
     }
+    storeSubtitles();
   });
 
   subtitleTimeline.itemsData.on("remove", function(event, properties, senderId) {
@@ -1011,8 +980,7 @@ function loadSubtitleTimeline() {
      subtitles.splice(subtitles.findIndex(a => a.id === id), 1);
  
      if (senderId != "change-language") {
-      //storeSubtitles();
-      unsavedSubtitleChanges = true;
+      storeSubtitles();
 
       //get subtitle in video
       let cue = subtitleTrack.cues.getCueById(id);
@@ -1021,7 +989,7 @@ function loadSubtitleTimeline() {
      }
  
      //update UI
-     updateSubtitleEditor();
+     updateSubtitleEditor(false);
   });
 }
 
@@ -1477,6 +1445,38 @@ function removeInvalidFormFields () {
   $("#annotationtext").removeClass("invalid-form-value");
 }
 
+function getSubtitleLanguages() {
+  let link = "https://video-editor.eu/api/subtitles/"+getUniqueEUPSId()+"/"+encodeURIComponent(options.manifest);
+
+  return fetch(
+    link, { 
+        method: 'GET',
+        mode: 'cors',
+        headers: { "Content-Type": "application/json; charset=utf-8" }
+    })
+  .then(res => res.json())
+  .catch(err => {
+    console.error("Could not retrieve subtitle languages");
+    console.log(err);
+  });
+}
+
+function getSubtitlesInLanguage(language) {
+  let link = "https://video-editor.eu/api/subtitles/"+getUniqueEUPSId()+"/"+encodeURIComponent(options.manifest)+"/"+language;
+
+  return fetch(
+    link, { 
+        method: 'GET',
+        mode: 'cors',
+        headers: { "Content-Type": "application/json; charset=utf-8" }
+    })
+  .then(res => res.json())
+  .catch(err => {
+    console.error("Could not retrieve subtitles in language "+language);
+    console.log(err);
+  });
+}
+
 function getSubtitles() {
   let link = "https://video-editor.eu/api/subtitles/"+getUniqueEUPSId()+"/"+encodeURIComponent(options.manifest)+"/"+$("#subtitle-language option:selected").val();
   //remove subtitles from old language
@@ -1501,7 +1501,7 @@ function getSubtitles() {
       subtitles.forEach(function(subtitle) {
         addSubtitle(subtitle);
       });
-      updateSubtitleEditor();
+      updateSubtitleEditor(true);
       subtitleTrack.mode = "showing";
   })
   .catch(err => {
@@ -1513,13 +1513,15 @@ function getSubtitles() {
 function storeSubtitles() {
   let link = "https://video-editor.eu/api/subtitles/"+getUniqueEUPSId()+"/"+encodeURIComponent(options.manifest)+"/"+$("#subtitle-language option:selected").val();
 
+  let subtitlesToStore = subtitles.filter(subtitle => subtitle.text.length > 0);
+
   fetch(
       link, { 
           method: 'POST',
           mode: 'cors',
           headers: { "Content-Type": "application/json; charset=utf-8"
           },
-          body: JSON.stringify(subtitles)
+          body: JSON.stringify(subtitlesToStore)
       })
   .then(res => res.json())
   .then(response => {
@@ -1543,10 +1545,20 @@ function updateSubtitle(subtitle) {
   //update subtitle in video
   let cue = subtitleTrack.cues.getCueById(subtitle.id);
   //remove existing cue
-  subtitleTrack.removeCue(cue);  
-  cue.text = subtitle.text;
-  cue.startTime = subtitle.start / 1000;
-  cue.endTime = subtitle.end / 1000;
+  if (cue != null) {
+    //update existing item
+    subtitleTrack.removeCue(cue);  
+    cue.text = subtitle.text;
+    cue.startTime = subtitle.start / 1000;
+    cue.endTime = subtitle.end / 1000;
+  } else {
+    //add suggested subtitle
+    cue = new VTTCue(subtitle.start/1000, subtitle.end/1000, subtitle.text);
+    cue.id = subtitle.id;
+    cue.line = -4;
+    cue.size = 90;
+  }
+ 
   //add updated cue
   subtitleTrack.addCue(cue);
 
@@ -1562,10 +1574,8 @@ function subtitleItemUpdate(item) {
 
   subtitles[subtitles.findIndex(a => a.id === item.id)] = subtitle;
 
-  unsavedSubtitleChanges = true;
-
   //update UI
-  updateSubtitleEditor();
+  updateSubtitleEditor(false);
 
   //update subtitle in video
   let cue = subtitleTrack.cues.getCueById(item.id);
@@ -1578,16 +1588,60 @@ function subtitleItemUpdate(item) {
   subtitleTrack.addCue(cue);
 }
 
-function updateSubtitleEditor() {
+function updateSubtitleEditor(newLanguage) {
+  //order subtitles based on their starttime
+  subtitles.sort((a,b) => a.start - b.start);
+
+  if (newLanguage) {
+    //check if there is another language with more subtitles
+    getSubtitleLanguages().then(subtitleLanguages => {
+      let languageWithMostSubtitles = subtitleLanguages.reduce((a,b)=>a.number_of_subtitles > b.number_of_subtitles ? a : b).language;
+      
+      //if there is another language with more subtitles
+      if ($("#subtitle-language option:selected").val() != languageWithMostSubtitles) {
+        //get those subtitles
+        getSubtitlesInLanguage(languageWithMostSubtitles).then(subs => {
+          //let mergedSubtitles = subtitles;
+          subs.sort((a,b) => a.start - b.start);
+        
+          subs.forEach((sub) => {
+            //check if the starts fits in a range
+            let startFound = subtitles.find(s => sub.start >= s.start && sub.start < s.end);
+            let endFound = subtitles.find(s => sub.end > s.start && sub.end <= s.end);
+
+            //and fill empty subtitle nodes to speed up translations
+            if (!startFound && !endFound) {
+              sub.text = "";
+              sub.id = generateAnnotationId();
+              subtitles.push(sub);
+            }
+          });
+          subtitles.sort((a,b) => a.start - b.start);  
+          fillEditorUI();        
+        });
+      } else {
+        fillEditorUI();
+      }
+    });
+  } else {
+    fillEditorUI();
+  }
+}
+
+function fillEditorUI() {
+  //clear current subtitles
   $(".subtitle-wrapper").each(function() {
     $(this).remove();
   });
 
-  //order subtitles based on their starttime
-  subtitles.sort((a,b) => a.start - b.start);
-
   subtitles.forEach(function(subtitle) {
-    $(".subtitle-editor-frame").append('<div class="subtitle-wrapper" data-id="'+subtitle.id+'" data-start="'+subtitle.start+'" data-end="'+subtitle.end+'"><div class="subtitle-timing">'+formatTime(subtitle.start, true)+' - '+formatTime(subtitle.end, true)+'</div><textarea class="subtitle-input-text validate" maxlength="100" style="display:none;">'+subtitle.text+'</textarea><div class="subtitle-text" tabindex="-1">'+subtitle.text+'<div class="edit-subtitle"></div></div></div>');
+    let subtitleHTML = '<div class="subtitle-wrapper" data-id="'+subtitle.id+'" data-start="'+subtitle.start+'" data-end="'+subtitle.end+'">';
+    subtitleHTML += '<div class="subtitle-timing">'+formatTime(subtitle.start, true)+' - '+formatTime(subtitle.end, true)+'</div>';
+    subtitleHTML += '<textarea class="subtitle-input-text validate" maxlength="100" style="display:none;">'+subtitle.text+'</textarea><div class="subtitle-text';
+    subtitleHTML += subtitle.text == "" ? ' empty-subtitle-text"' : '"';
+    subtitleHTML += ' tabindex="-1">'+subtitle.text+'<div class="edit-subtitle"></div><div class="delete-subtitle"></div></div></div>';
+
+    $(".subtitle-editor-frame").append(subtitleHTML);
   });
 }
 
@@ -1755,11 +1809,22 @@ function saveSubtitle(that) {
   let id = $(that).parent().data("id");
   let subtitle = subtitles.find(s => s.id === id);
   subtitle.text = text;
-  
-  //update subtitle
-  updateSubtitle(subtitle);
-  subtitles[subtitles.findIndex(s => s.id === subtitle.id)] = subtitle;
-  $(that).next().text(text);
+
+  storeSubtitles();
+
+  if (subtitle.text != "") {
+    //update subtitle
+    updateSubtitle(subtitle);
+    subtitles[subtitles.findIndex(s => s.id === subtitle.id)] = subtitle;
+    
+    $(that).next().removeClass("empty-subtitle-text");
+  }
+ 
+  if ($(that).next().text() == "") {
+    $(that).next().prepend(text);
+  } else {
+    $(that).next().text(text);
+  }
   $(that).next().show();
 }
 

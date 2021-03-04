@@ -149,6 +149,66 @@ export default {
             code: 'sv',
             iso: 'sv-SE',
             isoAlpha3: 'swe'
+          },
+          {
+            name: '中文',
+            code: 'zh',
+            iso: 'zh-CN',
+            isoAlpha3: 'zho'
+          },
+          {
+            name: 'हिन्दी',
+            code: 'hi',
+            iso: 'hi-IN',
+            isoAlpha3: 'hin'
+          },
+          {
+            name: 'বাংলা',
+            code: 'bn',
+            iso: 'bn-IN',
+            isoAlpha3: 'ben'
+          },
+          {
+            name: 'русский',
+            code: 'ru',
+            iso: 'ru-RU',
+            isoAlpha3: 'rus'
+          },
+          {
+            name: '日本語',
+            code: 'ja',
+            iso: 'ja-JP',
+            isoAlpha3: 'jpn'
+          },
+          {
+            name: 'ਪੰਜਾਬੀ',
+            code: 'pa',
+            iso: 'pa-IN',
+            isoAlpha3: 'pan'
+          },
+          {
+            name: 'मराठी',
+            code: 'mr',
+            iso: 'mr-IN',
+            isoAlpha3: 'mar'
+          },
+          {
+            name: 'తెలుగు',
+            code: 'te',
+            iso: 'te-IN',
+            isoAlpha3: 'tel'
+          },
+          {
+            name: 'Türkçe',
+            code: 'tr',
+            iso: 'tr-TR',
+            isoAlpha3: 'tur'
+          },
+          {
+            name: '한국어',
+            code: 'ko',
+            iso: 'ko-KR',
+            isoAlpha3: 'kor'
           }
     ]
 }

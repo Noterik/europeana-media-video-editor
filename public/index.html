@@ -12,14 +12,18 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <link rel="stylesheet" href="//materializecss.com/extras/noUiSlider/nouislider.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.2.1/dash.all.min.js" integrity="sha512-K8ychE2luu1+zrt4MiDhr8L8B6zPB+x/EofroMF6LygAn+Oh/EadU18WgChXuOeCAan0y5/IQGS06izToR8xnQ==" crossorigin="anonymous"></script>
   <script src="/bundle.js"></script>
 </head>
 <body>
 <div id="header" class="container">
   <div class="row">
-    <div class="col">
-      <div id="header-title">Europeana Unified Media Player</div>
+    <div class="col s2">
+      <div id="header-title">Logo</div>
       <div id="header-subtitle">Video editor</div>
+    </div>
+    <div class="col s8 search-bar">
+      <!--Search <input type="text" id="search" placeholder="Search through Europeana">-->
     </div>
   </div>
 </div>
@@ -27,11 +31,11 @@
 <div id="wrapper" class="container">
   <div class="row">
     <div id="content-card" class="card-panel white">
-      <div class="row">
+      <!--<div class="row">
         <div class="col s12">        
           <a class="white-button waves-effect waves-blue btn right" onclick="window.close();return false;"><i class="material-icons left">close</i>Exit</a>
         </div>
-      </div>
+      </div>-->
       <div class="row">
         <div class="col s12">
           <ul class="tabs">
@@ -264,20 +268,43 @@
         </div>
         <div id="subtitles" class="col s12">
             <div class="row">
-              <div class="col s12 video-title"></div>
-            </div>
-            <div class="row">
-              <div class="col s4">
-                <div class="bold">Video language</div>
-                <div class="item-language"></div>
-                <div>
-                    <a class="white-button waves-effect waves-blue btn right" id="createsubtitle">Create subtitle</a>
-                </div>
-                <div class="subtitle-language-selector">
-                  <div class="col s4 select-language">
-                    Select language
+              <div class="col s3">
+                <div class="subtitle-editor-metadata-box">
+                  <div class="video-title bold subtitle-editor-title"></div>
+                  <div class="item-language-wrapper">
+                    <div class="bold">Video language</div>
+                    <div class="item-language"></div>
                   </div>
-                  <div class="col s8 select-language input-field">
+                  
+                  <div id="subtitle-embed">
+                    <ul class="embed-options-small">
+                      <li class="embed-options-small-tab embed-options-small-tab-selected" data-value="link" data-target="copy-embed-subtitle-type">Link</li>
+                      <li class="embed-options-small-tab" data-value="iframe" data-target="copy-embed-subtitle-type">Iframe</li>
+                      <li class="embed-options-small-tab" data-value="oembed" data-target="copy-embed-subtitle-type">Oembed</li>
+                    </ul>
+                    <div class="embed-wrapper">
+                      <select id="copy-embed-subtitle-type">
+                        <option value="link" selected>Link</option>
+                        <option value="iframe">Iframe</option>
+                        <option value="oembed">Oembed</option>
+                        <!--<option value="manifest">Manifest</option>-->
+                      </select>
+                    
+                      <input type="text" id="copy-embed-subtitle-input" class="input-text" readonly value="">
+                          <!--<div class="type-embed">
+                            
+                          </div>-->
+                      <div id="copy-embed-subtitle" class="waves-effect waves-blue btn copy-button-small">
+                        <i class="fa fa-clipboard"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="subtitle-editor-metadata-box">
+                  <div class="select-language">
+                    Subtitle language
+                  </div>
+                  <div class="select-language input-field">
                     <select id="subtitle-language">
                       <option value="bg-BG">Български</option>
                       <option value="cs-CZ">Čeština</option>
@@ -304,52 +331,41 @@
                       <option value="sk-SK">Slovenčina</option>
                       <option value="sl-SI">Slovenščina</option>
                       <option value="sv-SE">Svenska</option>
+                      <option value="zh-CN">中文</option>
+                      <option value="hi-IN">हिन्दी</option>
+                      <option value="bn-IN">বাংলা</option>
+                      <option value="ru-RU">русский</option>
+                      <option value="ja-JP">日本語</option>
+                      <option value="pa-IN">ਪੰਜਾਬੀ</option>
+                      <option value="mr-IN">मराठी</option>
+                      <option value="te-IN">తెలుగు</option>
+                      <option value="tr-TR">Türkçe</option>
+                      <option value="ko-KR">한국어</option>
                     </select>
-                  </div>
-                </div>
-                <div class="bold subtitle-editor-title">
-                  Subtitle editor
-                </div>
-                <div class="subtitle-editor-frame">
-                                      
-                </div>
-                <a class="white-button waves-effect waves-blue btn left semibold" id="add-subtitle">Add Subtitle</a>
-                <!--<button type="button" class="add-button right" id="add-subtitle" title="Add subtitle">
-                  <i class="add-button-inner" aria-hidden="true"></i>Add subtitle
-                </button>-->
-              </div>
-              <div class="col s8">
-                  <div class="player-wrapper" id="subtitle-player"></div>
-                  <div id="subtitle-timeline-wrapper" class="timeline-wrapper">
-                    <div id="subtitle-timeline-inner-wrapper" class="timeline-inner-wrapper">
-                      <div id="subtitle-timeline"></div>
-                    </div>                
-                  </div>
-                  <div class="subtitle-pause-while-typing-wrapper">
+                  </div>   
+                  <div class="preview-wrapper">
+                    <a class="semibold preview-button"><i class="preview-icon" aria-hidden="true"></i>Preview</a>
+                  </div>              
+                  <div class="btn blue-button left" id="downloadsubtitle">Download subtitle</div>                  
+                  <div class="pause-video-while-typing-wrapper">
                     <label>
                       <input type="checkbox" id="pause-while-typing"/>
                       <span>Pause video while typing</span>
                     </label>
                   </div>
-                  <div class="subtitle-preview-save-button-wrapper">
-                      <div class="btn blue-button left" id="downloadsubtitle">Download</div>
-                    <div class="btn blue-button right" id="saveSubtitlesBtn">Save</div>
-                    <a class="right semibold preview-button"><i class="preview-icon" aria-hidden="true"></i>Preview</a>
-                </div>
-                <div id="subtitle-embed">
-                  <div class="right">
-                      <input type="text" id="copy-embed-subtitle-input" class="input-text" readonly value="" size="25">
-                      <div class="type-embed">
-                        <select id="copy-embed-subtitle-type">
-                          <option value="link" selected>Link</option>
-                          <option value="iframe">Iframe</option>
-                          <option value="oembed">Oembed</option>
-                          <!--<option value="manifest">Manifest</option>-->
-                        </select>
-                      </div>
-                      <div id="copy-embed-subtitle" class="waves-effect waves-blue btn copy-button">Copy</div>
-                  </div>
+                </div>               
               </div>
+              <div class="col s9">
+                <div class="player-wrapper" id="subtitle-player"></div>
+                <div id="subtitle-timeline-wrapper" class="timeline-wrapper">
+                  <div id="subtitle-timeline-inner-wrapper" class="timeline-inner-wrapper">
+                    <div id="subtitle-timeline"></div>
+                  </div>                
+                </div>
+                <div class="subtitle-editor-frame">
+                                      
+                </div>
+                <a class="white-button waves-effect waves-blue btn left semibold" id="add-subtitle">Add Subtitle</a>
               </div>
             </div>
         </div>
