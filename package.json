@@ -20,7 +20,7 @@
     "materialize-css": "^1.0.0",
     "placeload.js": "^1.0.4",
     "stream-browserify": "^3.0.0",
-    "vis-timeline": "^5.1.0",
+    "vis-timeline": "^7.4.4",
     "webpack-jquery-ui": "^2.0.1"
   },
   "devDependencies": {
