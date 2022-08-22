@@ -16,7 +16,7 @@ const config = function (mode) {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['env']
+                        presets: ['@babel/preset-env']
                     }
                 }
             },
@@ -34,7 +34,10 @@ const config = function (mode) {
             },
             {
                 test: /\.jpe?g$|\.ico$|\.gif$|\.png$|\.svg$|\.woff$|\.ttf$|\.wav$|\.mp3$/,
-                loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
+                use: {
+                    loader: 'file-loader',
+                    options: { name: '[name].[ext]' }  // <-- retain original file name
+                }
             }
         ]
         },
@@ -60,6 +63,12 @@ const config = function (mode) {
             compress: true,
             hot: true,
             port: process.env.EMVE_PORT
+        },
+        resolve: {
+            fallback: { 
+                "stream": require.resolve("stream-browserify"),
+                "buffer": false 
+            }
         }
     }
 

@@ -19,7 +19,6 @@
 <div id="header" class="container">
   <div class="row">
     <div class="col s2">
-      <div id="header-title">Logo</div>
       <div id="header-subtitle">Video editor</div>
     </div>
     <div class="col s8 search-bar">
@@ -346,7 +345,8 @@
                   <div class="preview-wrapper">
                     <a class="semibold preview-button"><i class="preview-icon" aria-hidden="true"></i>Preview</a>
                   </div>              
-                  <div class="btn blue-button left" id="downloadsubtitle">Download subtitle</div>                  
+                  <div class="btn blue-button left" id="downloadsubtitle">Download subtitle</div>  
+                  <div class="btn blue-button left" id="submitsubtitle">Submit subtitle</div>                 
                   <div class="pause-video-while-typing-wrapper">
                     <label>
                       <input type="checkbox" id="pause-while-typing"/>
@@ -366,6 +366,91 @@
                                       
                 </div>
                 <a class="white-button waves-effect waves-blue btn left semibold" id="add-subtitle">Add Subtitle</a>
+                <span class="left semibold" id="subtitle-finalized">Subtitles cannot be changed after a submission</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 description-background">
+                <p class="description-original-language">
+
+                </p>
+              </div>
+            </div>
+            <div class="row review">
+              <div class="col s12">
+                <div class="row">
+                    <div class="col s12">
+                      <h3>Review Form</h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s6">
+                    General quality of the subtitles / Ogólna ocena jakości napisów
+                  </div>
+                  <div class="col s1">
+                    1
+                  </div>
+                  <div class="col s4">
+                    <input type="range" id="general_quality" name="general_quality" min="1" max="7" default="4" step="1">
+                  </div>
+                  <div class="col s1">
+                    7
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s6">
+                    Appropriateness of the register/ Trafność użytego rejestru języka
+                  </div>
+                  <div class="col s1">
+                    1
+                  </div>
+                  <div class="col s4">
+                    <input type="range" id="appropriateness" name="appropriateness" min="1" max="7" default="4" step="1">
+                  </div>
+                  <div class="col s1">
+                    7
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s6">
+                    Subtitles’ flow/ Płynność, naturalność napisów
+                  </div>
+                  <div class="col s1">
+                    1
+                  </div>
+                  <div class="col s4">
+                    <input type="range" id="subtitles_flow" name="subtitles_flow" min="1" max="7" default="4" step="1">
+                  </div>
+                  <div class="col s1">
+                    7
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s6">
+                    Grammatical Correctness/ Poprawność gramatyczna
+                  </div>
+                  <div class="col s1">
+                    1
+                  </div>
+                  <div class="col s4">
+                    <input type="range" id="grammar" name="grammar" min="1" max="7" default="4" step="1">
+                  </div>
+                  <div class="col s1">
+                    7
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s12">
+                    <textarea maxlengt="1000" name="comments" id="comments" placeholder="Other comments/ inne komentarze"></textarea>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s2">
+                    <div class="btn blue-button left" id="submitreview">Submit review</div> 
+                  </div>
+                  <div class="col s10"></div>
+                </div>
               </div>
             </div>
         </div>

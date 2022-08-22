@@ -20,7 +20,7 @@ require('./icons/pause.svg');
 require('./icons/check.svg');
 require('./icons/empty.svg');
 
-const EuropeanaMediaPlayer = require("EuropeanaMediaPlayer");
+const EuropeanaMediaPlayer = require("@europeana/media-player");
 const languages = require("./components/languages/lang.js").default.locales;
 const he = require('he'); 
 
@@ -35,6 +35,8 @@ var videoObj;
 var options;
 var players = [];
 var incrementTimeout, incrementInterval;
+var incrementSubtitleTimeout = null;
+var incrementSubtitleInterval = null;
 var annotations;
 var manifestJsonld = {};
 var manifestMetadata = {};
@@ -49,6 +51,12 @@ var embedId;
 var user;
 var hsh;
 var initSliderUpdateDone = false;
+var subtitleathonKey = "";
+var subtitleEditable = true;
+var shiftPressed = false;
+var eupsId;
+var reviewKey = "";
+var subtitleTimingEdit = null;
 
 const timelineWindowViewPortDuration = 180000;
 const subtitleTimelineWindowViewPortDuration = 15000;
@@ -97,6 +105,16 @@ window.addEventListener('load', () => {
   if (getAllUrlParams(window.location.href).hash != undefined) {
     hsh = getAllUrlParams(window.location.href).hash;
   }
+  if (getAllUrlParams(window.location.href).key != undefined) {
+    subtitleathonKey =  getAllUrlParams(window.location.href).key;
+  }
+  if (getAllUrlParams(window.location.href).id != undefined) {
+    eupsId =  getAllUrlParams(window.location.href).id;
+  }
+  if (getAllUrlParams(window.location.href).reviewkey != undefined) {
+    reviewKey =  getAllUrlParams(window.location.href).reviewkey;
+  }
+
 
   getEmbedId();
 
@@ -125,16 +143,115 @@ window.addEventListener('load', () => {
         manifestJsonld = player.manifest.__jsonld;
         manifestMetadata = manifestJsonld.metaData;
 
+        console.log(manifestJsonld);
+        console.log(manifestMetadata);
+
         let langCode = "";
         let language = "";
         let duration = 0;
         let width = 320;
         let height = 240;
 
+        if (subtitleathonKey === "" && reviewKey === "") {
+          $('#embed-tab').show();
+        }
+
         for (let [key, value] of Object.entries(manifestJsonld.rights)) {
           if (value == "allowed") {
             $('#'+key+"-tab").show();
           }
+        }
+
+        if (subtitleathonKey !== "") {
+          $('#embed-tab').hide();
+          $('#annotation-tab').hide();
+          $('#playlist-tab').hide();
+          tabsInstance.select("subtitles");
+
+          //check hash
+          let link = "https://preview.api.subtitleathon.eu/item/details/"+subtitleathonKey;
+
+          fetch(
+              link, { 
+                  method: 'GET',
+                  credentials: "include",
+              })
+          .then(res => res.json())
+          .then(response => {
+            if (response.results) {
+              $("#subtitle-language").val(response.results[0].language);
+              $("#subtitle-language").prop('disabled', true);
+
+              M.FormSelect.init(document.querySelectorAll("#subtitle-language"));
+
+              //enable submit button
+              if (response.results[0].finalized == 0) {
+                $("#submitsubtitle").show();
+              } else {
+                subtitleEditable = false;
+                $("#add-subtitle").hide();
+                $("#subtitle-finalized").show();
+                $(".edit-subtitle").remove();
+                $(".delete-subtitle").remove();
+
+                subtitleTimeline.setOptions({selectable: false});
+              }
+            } else {  
+              //TODO: error
+            }
+          });
+
+          //disable some options
+          $("#subtitle-embed").hide();
+          $(".preview-wrapper").hide();
+          $("#downloadsubtitle").hide();
+        }
+
+        if (reviewKey !== "") {
+          $('#embed-tab').hide();
+          $('#annotation-tab').hide();
+          $('#playlist-tab').hide();
+          tabsInstance.select("subtitles");
+
+          //check hash
+          let link = "https://preview.api.subtitleathon.eu/review/details/"+reviewKey;
+
+          fetch(
+              link, { 
+                  method: 'GET',
+                  credentials: "include",
+              })
+          .then(res => res.json())
+          .then(response => {
+            if (response.results) {
+              $("#subtitle-language").val(response.results[0].language);
+              $("#subtitle-language").prop('disabled', true);
+
+              M.FormSelect.init(document.querySelectorAll("#subtitle-language"));
+
+              $(".review").show();
+
+              //enable submit button
+              if (response.results[0].review_done == 0) {
+                $("#submitreview").show();
+              } else {
+                subtitleEditable = false;
+                $("#add-subtitle").hide();
+                $("#subtitle-finalized").show();
+                $(".edit-subtitle").remove();
+                $(".delete-subtitle").remove();
+
+                subtitleTimeline.setOptions({selectable: false});
+              }
+            } else {  
+              //TODO: error
+            }
+          });
+
+          //disable some options
+          $("#subtitle-embed").hide();
+          $(".preview-wrapper").hide();
+          $("#downloadsubtitle").hide();
         }
 
         if (manifestJsonld.label) {
@@ -169,7 +286,7 @@ window.addEventListener('load', () => {
           timeUpdate(ui.value * 1000, "annotation-player");
         });
 
-        if (manifestMetadata.find(obj => obj.label.en[0] == "language")) {
+        /*if (manifestMetadata.find(obj => obj.label.en[0] == "language")) {
           langCode = manifestMetadata.find(obj => obj.label.en[0] == "language" && obj.value[Object.keys(obj.value)[0]][0].length == 2).value[Object.keys(manifestMetadata.find(obj => obj.label.en[0] == "language" && obj.value[Object.keys(obj.value)[0]][0].length == 2).value)][0];
           if (langCode != undefined) {
             language = languages.find(lang => lang.code == langCode).name;
@@ -182,6 +299,32 @@ window.addEventListener('load', () => {
           
           $(".item-language-wrapper").show();
           $(".item-language").text(language);
+        }*/
+
+        if (manifestJsonld.summary) {
+          let summaryKeys = Object.keys(manifestJsonld.summary);
+  
+          if (summaryKeys.length == 1) {
+              let summary = manifestJsonld.summary[summaryKeys[0]];
+  
+              if (summary.length > 0) {
+                $(".description-original-language").text(summary[0]);
+                $(".description-background").show();
+              }
+          } else if (summaryKeys.length > 1) {
+            //pick summary with original language
+            for (let item of summaryKeys) {
+              if (manifestJsonld.summary[item][0].startsWith("Original language summary:")) {
+                $(".description-original-language").text(manifestJsonld.summary[item][0]);
+                $(".description-background").show();
+                break;
+              } else if (manifestJsonld.summary[item][0].startsWith("Extended description:")) {
+                $(".description-original-language").text(manifestJsonld.summary[item][0]);
+                $(".description-background").show();
+                break;
+              }
+            }
+          }
         }
       });
     } else if (this.id == "subtitle-player") {  
@@ -457,6 +600,15 @@ window.addEventListener('load', () => {
       }
     });
 
+    //check if we have open edit boxes, close them
+    subtitleTimingEdit = null;
+    $(".subtitle-input-timing").each(function() {
+      if ($(this).is(":visible")) {
+        let that = this;
+        saveSubtitleTiming(that);
+      }
+    });
+
     //get current time position
     let playerObject = players.find(player => player.id == "subtitle-player");  
     let starttime = playerObject.player.avcomponent._getCurrentCanvas()._canvasClockTime * 1000;
@@ -497,14 +649,14 @@ window.addEventListener('load', () => {
     let inserted = false;
     $(".subtitle-wrapper").each(function() {
       if (starttime < $(this).data("start")) {
-        $('<div class="subtitle-wrapper" data-id="'+subtitleId+'" data-start="'+starttime+'" data-end="'+endtime+'"><div class="subtitle-timing">'+formatTime(starttime, true)+' - '+formatTime(endtime, true)+'</div><textarea class="subtitle-input-text validate" maxlength="100"></textarea><div class="subtitle-text" style="display:none;" tabindex="-1"><div class="edit-subtitle"></div><div class="delete-subtitle"></div></div></div>')
+        $('<div class="subtitle-wrapper" data-id="'+subtitleId+'" data-start="'+starttime+'" data-end="'+endtime+'"><div class="subtitle-timing" tabindex="-1">'+formatTime(starttime, true)+' - '+formatTime(endtime, true)+'<div class="edit-subtitle-timing"></div></div><div class="subtitle-input-timing" style="display:none;"><div class="subtitle-timing-start-wrapper"><div class="subtitle-timing-updown-wrapper subtitle-timing-up-wrapper"><button type="button" class="step-button subtitle-timing-updown start down" title="Step down"><i id="startdown" class="stepdown"></i>Step down</button></div><input type="text" size="6" class="subtitle-timing-start" value="'+formatTime(subtitle.start, true)+'" pattern="((?:2[0-3]|[01]?[0-9]):)?[0-5][0-9]:[0-5][0-9].[0-9]{2}"><div class="subtitle-timing-updown-wrapper subtitle-timing-down-wrapper"><button type="button" class="step-button subtitle-timing-updown start up" title="Step down"><i id="startup" class="stepup"></i>Step up</button></div></div><hr class="subtitle-timing-hr"/><div class="subtitle-timing-end-wrapper"><div class="subtitle-timing-updown-wrapper subtitle-timing-up-wrapper"><button type="button" class="step-button subtitle-timing-updown end down" title="Step down"><i id="startdown" class="stepdown"></i>Step down</button></div><input type="text" size="6" class="subtitle-timing-end" value="'+formatTime(subtitle.end, true)+'" pattern="((?:2[0-3]|[01]?[0-9]):)?[0-5][0-9]:[0-5][0-9].[0-9]{2}"><div class="subtitle-timing-updown-wrapper subtitle-timing-down-wrapper"><button type="button" class="step-button subtitle-timing-updown end up" title="Step up"><i id="startup" class="stepup"></i>Step up</button></div></div></div><textarea class="subtitle-input-text validate" maxlength="100"></textarea><div class="subtitle-text" style="display:none;" tabindex="-1"><div class="edit-subtitle"></div><div class="delete-subtitle"></div></div></div>')
         .insertBefore($(this));
         inserted = true;
         return false;
       }
     });
     if (!inserted) {
-      $(".subtitle-editor-frame").append('<div class="subtitle-wrapper" data-id="'+subtitleId+'" data-start="'+starttime+'" data-end="'+endtime+'"><div class="subtitle-timing">'+formatTime(starttime, true)+' - '+formatTime(endtime, true)+'</div><textarea class="subtitle-input-text validate" maxlength="100"></textarea><div class="subtitle-text" style="display:none;" tabindex="-1"><div class="edit-subtitle"></div><div class="delete-subtitle"></div></div></div>');
+      $(".subtitle-editor-frame").append('<div class="subtitle-wrapper" data-id="'+subtitleId+'" data-start="'+starttime+'" data-end="'+endtime+'"><div class="subtitle-timing" tabindex="-1">'+formatTime(starttime, true)+' - '+formatTime(endtime, true)+'<div class="edit-subtitle-timing"></div></div><div class="subtitle-input-timing" style="display:none;"><div class="subtitle-timing-start-wrapper"><div class="subtitle-timing-updown-wrapper subtitle-timing-up-wrapper"><button type="button" class="step-button subtitle-timing-updown start down" title="Step down"><i id="startdown" class="stepdown"></i>Step down</button></div><input type="text" size="6" class="subtitle-timing-start" value="'+formatTime(subtitle.start, true)+'" pattern="((?:2[0-3]|[01]?[0-9]):)?[0-5][0-9]:[0-5][0-9].[0-9]{2}"><div class="subtitle-timing-updown-wrapper subtitle-timing-down-wrapper"><button type="button" class="step-button subtitle-timing-updown start up" title="Step down"><i id="startup" class="stepup"></i>Step up</button></div></div><hr class="subtitle-timing-hr"/><div class="subtitle-timing-end-wrapper"><div class="subtitle-timing-updown-wrapper subtitle-timing-up-wrapper"><button type="button" class="step-button subtitle-timing-updown end down" title="Step down"><i id="startdown" class="stepdown"></i>Step down</button></div><input type="text" size="6" class="subtitle-timing-end" value="'+formatTime(subtitle.end, true)+'" pattern="((?:2[0-3]|[01]?[0-9]):)?[0-5][0-9]:[0-5][0-9].[0-9]{2}"><div class="subtitle-timing-updown-wrapper subtitle-timing-down-wrapper"><button type="button" class="step-button subtitle-timing-updown end up" title="Step up"><i id="startup" class="stepup"></i>Step up</button></div></div></div><textarea class="subtitle-input-text validate" maxlength="100"></textarea><div class="subtitle-text" style="display:none;" tabindex="-1"><div class="edit-subtitle"></div><div class="delete-subtitle"></div></div></div>');  
     }
 
     $(".subtitle-wrapper[data-id='"+subtitleId+"'] > textarea.subtitle-input-text").trigger("focus");
@@ -512,11 +664,16 @@ window.addEventListener('load', () => {
   
   $(document).on({
     'focus': function() {
-      //select subtitle in timeline
-      let id = $(this).parent().data("id");
-      let subtitle = subtitles.find(s => s.id === id);
-      if (subtitle) {
-        selectSubtitleInTimeline(subtitle);
+      if (subtitleEditable) {
+        //select subtitle in timeline
+        let id = $(this).parent().data("id");
+        let subtitle = subtitles.find(s => s.id === id);
+        if (subtitle) {
+          selectSubtitleInTimeline(subtitle);
+        }
+      } else {
+        $(".edit-subtitle").remove();
+        $(".delete-subtitle").remove();
       }
     },
     'blur': function() {
@@ -533,6 +690,15 @@ window.addEventListener('load', () => {
         if ($(this).is(":visible")) {
           let that = this;
           saveSubtitle(that);
+        }
+      });
+
+      //check if we have open edit boxes, close them
+      subtitleTimingEdit = null;
+      $(".subtitle-input-timing").each(function() {
+        if ($(this).is(":visible")) {
+          let that = this;
+          saveSubtitleTiming(that);
         }
       });
 
@@ -556,6 +722,63 @@ window.addEventListener('load', () => {
     }
   }, 'div.delete-subtitle');
 
+  $(document).on({
+    'focus': function() {
+      if (subtitleEditable) {
+        //select subtitle in timeline
+        let id = $(this).parent().data("id");
+        let subtitle = subtitles.find(s => s.id === id);
+        if (subtitle) {
+          selectSubtitleInTimeline(subtitle);
+        }
+      } else {
+        $(".edit-subtitle-timing").remove();
+      }
+    },
+    'blur': function() {
+      subtitleTimeline.setSelection([]);
+    }
+  }, 'div.subtitle-timing');
+
+  $(document).on({
+    'click': function() {
+      let dataId = $(this).parent().parent().attr("data-id");
+
+      //check if we have open edit boxes, close them
+      $(".subtitle-input-text").each(function() {
+        if ($(this).is(":visible")) {
+          let that = this;
+          saveSubtitle(that);
+        }
+      });
+
+      //check if we have open edit boxes, close them
+      subtitleTimingEdit = null;
+      $(".subtitle-input-timing").each(function() {
+        if ($(this).is(":visible")) {
+          let that = this;
+          saveSubtitleTiming(that);
+        }
+      });
+
+      //enable edit subtitle timing
+      $(".subtitle-wrapper[data-id='"+dataId+"'] > .subtitle-timing").hide();
+      $(".subtitle-wrapper[data-id='"+dataId+"'] > .subtitle-input-timing").show();
+    }
+  }, 'div.edit-subtitle-timing');
+
+  $(document).on({
+    'mousedown': function() {
+      subtitleTimingUpDownPressed(this);
+    },
+    'mouseup': function() {
+      subtitleTimingUpDownStopped(this);
+    },
+    'mouseleave': function() {
+      subtitleTimingUpDownStopped(this);
+    }
+  }, 'button.subtitle-timing-updown');
+
   $("#subtitle-language").on("change", function() {  
       changeSubtitleLanguage();
   });
@@ -568,13 +791,24 @@ window.addEventListener('load', () => {
           playerObject.player.avcomponent.pause();
         }
         var keycode = event.keyCode || event.which;
-        //on enter save subtitle
+
+        if (event.originalEvent.key === "Shift") {
+          shiftPressed = true;
+        }
+
+        //on enter save subtitle, but don't save when it's a shift enter
         if(keycode == '13') {
           let that = this;
-          saveSubtitle(that);
+          if (!shiftPressed) {
+            saveSubtitle(that);
+          }
         }
     }, 
     'keyup': function(event) {
+      if (event.originalEvent.key === "Shift") {
+        shiftPressed = false;
+      }
+
       if ($(this).val().length >= (parseInt($(this).attr('maxlength')))) {
         $(this).addClass('invalid-form-value');
       } else {
@@ -713,6 +947,91 @@ window.addEventListener('load', () => {
     if(keycode == '13') {
       console.log($("#search").val());
     }
+  });
+
+  //Submit subtitle
+  $("#submitsubtitle").on("click", function() {
+    var submitsubtitleDialog = new MatDialog();
+    submitsubtitleDialog.confirm(
+        {
+        Text:'Are you sure you want to finalize these subtitles?<br/><br/> If you do so you cannot change these subtitles later.',
+        Buttons:{
+          Ok:{
+            Label:'Ok',
+            Class: 'btn-flat waves-blue'
+          },
+          Cancel:{
+            Label:'Cancel',
+            Class: 'btn-flat waves-blue'
+          }
+        }
+      },
+      function(result){
+        if (result) {
+          let link = "https://preview.api.subtitleathon.eu/item/finalize/"+subtitleathonKey;
+          let eupsid = getUniqueEUPSId();
+
+          let data = { eupsid: eupsid,
+                       manifest: options.manifest
+          };
+
+          fetch(
+              link, { 
+                  method: 'POST',
+                  credentials: "include",
+                  headers: {
+                    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+                },
+                body: JSON.stringify(data)
+              })
+          .then(res => res.json())
+          .then(response => {
+            //console.log(response);
+            if (response.success) {
+              //window.close();
+              window.open("https://www.subtitleathon.eu/profile", "_self");
+              //window.history.back(); 
+            } else {
+              //TODO: error
+            }
+          });
+        } else {
+         //simply do nothing
+        }
+      });
+  });
+
+  //Submit review
+  $("#submitreview").on("click", function() {
+    let link = "https://preview.api.subtitleathon.eu/review/submit/"+reviewKey;
+
+    let data = { 
+      general_quality: $("#general_quality").val(),
+      appropriateness: $("#appropriateness").val(),
+      subtitles_flow: $("#subtitles_flow").val(),
+      grammar: $("#grammar").val(),
+      comments: $("#comments").val(),
+    };
+
+    fetch(
+      link, { 
+          method: 'POST',
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+          },
+          body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(response => {
+      if (response.success) {
+        //window.close();
+        window.open("https://www.subtitleathon.eu/profile", "_self");
+        //window.history.back(); 
+      } else {
+        //TODO: error
+      }
+    });
   });
 });
 
@@ -909,7 +1228,11 @@ function loadSubtitleTimeline() {
   //TODO: display subtitles from IIIF
   timelinedata = new DataSet([ ]);
   let subtitleTimelineOptions = timelineOptions;
-  subtitleTimelineOptions.selectable = true;
+  if (subtitleEditable) {
+    subtitleTimelineOptions.selectable = true;
+  } else {
+    subtitleTimelineOptions.selectable = false;
+  }
   subtitleTimelineOptions.margin = {item: { horizontal: -1}};
   subtitleTimelineOptions.onMoving = function (item, callback) {
     //prevent overlapping of subtitles
@@ -1172,6 +1495,9 @@ function setUniqueEUPSId() {
 }
 
 function getUniqueEUPSId() {
+  if (eupsId !== undefined) {
+    return eupsId;
+  }
   var keyValue = document.cookie.match('(^|;) ?eups_id=([^;]*)(;|$)');
   return keyValue ? keyValue[2] : setUniqueEUPSId();
 }
@@ -1530,6 +1856,29 @@ function storeSubtitles() {
   .catch(err => {
       console.error("Could not save subtitles");
   });
+  
+  if (subtitleathonKey !== "") { 
+    let link = "https://preview.api.subtitleathon.eu/item/inprogress/"+subtitleathonKey;
+    let eupsid = getUniqueEUPSId();
+
+    let data = {  eupsid: eupsid,
+                  manifest: options.manifest
+    };
+
+    fetch(
+      link, { 
+        method: 'POST',
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(response => {
+
+    });
+  }
 }
 
 function addSubtitle(subtitle) {
@@ -1538,7 +1887,7 @@ function addSubtitle(subtitle) {
   cue.line = -4;
   cue.size = 90;
   subtitleTrack.addCue(cue);
-  subtitleTimeline.itemsData.add([{id: subtitle.id, content: subtitle.text, start: subtitle.start, end: subtitle.end, language: subtitle.language}]);
+  subtitleTimeline.itemsData.add([{id: subtitle.id, content: subtitle.text.replace(/(?:\r\n|\r|\n)/g, '<br>'), start: subtitle.start, end: subtitle.end, language: subtitle.language}]);
 }
 
 function updateSubtitle(subtitle) {
@@ -1563,7 +1912,7 @@ function updateSubtitle(subtitle) {
   subtitleTrack.addCue(cue);
 
   //update subtitle in timeline
-  let update = {id: subtitle.id, content: subtitle.text, start: subtitle.start, end: subtitle.end, language: subtitle.language};
+  let update = {id: subtitle.id, content: subtitle.text.replace(/(?:\r\n|\r|\n)/g, '<br>'), start: subtitle.start, end: subtitle.end, language: subtitle.language};
   subtitleTimeline.itemsData.update([update]);
 }
 
@@ -1636,13 +1985,25 @@ function fillEditorUI() {
 
   subtitles.forEach(function(subtitle) {
     let subtitleHTML = '<div class="subtitle-wrapper" data-id="'+subtitle.id+'" data-start="'+subtitle.start+'" data-end="'+subtitle.end+'">';
-    subtitleHTML += '<div class="subtitle-timing">'+formatTime(subtitle.start, true)+' - '+formatTime(subtitle.end, true)+'</div>';
+    if (subtitleTimingEdit != null && subtitleTimingEdit == subtitle.id) {
+      subtitleHTML += '<div class="subtitle-timing" tabindex="-1" style="display:none;">'+formatTime(subtitle.start, true)+' - '+formatTime(subtitle.end, true)+'<div class="edit-subtitle-timing"></div></div><div class="subtitle-input-timing">';
+    } else {
+      subtitleHTML += '<div class="subtitle-timing" tabindex="-1">'+formatTime(subtitle.start, true)+' - '+formatTime(subtitle.end, true)+'<div class="edit-subtitle-timing"></div></div><div class="subtitle-input-timing" style="display:none;">';
+    }
+    subtitleHTML += '<div class="subtitle-timing-start-wrapper"><div class="subtitle-timing-updown-wrapper subtitle-timing-up-wrapper"><button type="button" class="step-button subtitle-timing-updown start down" title="Step down"><i id="startdown" class="stepdown"></i>Step down</button></div>';
+    subtitleHTML += '<input type="text" size="6" class="subtitle-timing-start" value="'+formatTime(subtitle.start, true)+'" pattern="((?:2[0-3]|[01]?[0-9]):)?[0-5][0-9]:[0-5][0-9].[0-9]{2}">';
+    subtitleHTML += '<div class="subtitle-timing-updown-wrapper subtitle-timing-down-wrapper"><button type="button" class="step-button subtitle-timing-updown start up" title="Step down"><i id="startup" class="stepup"></i>Step up</button></div></div>';
+    subtitleHTML += '<hr class="subtitle-timing-hr"/><div class="subtitle-timing-end-wrapper"><div class="subtitle-timing-updown-wrapper subtitle-timing-up-wrapper"><button type="button" class="step-button subtitle-timing-updown end down" title="Step down"><i id="startdown" class="stepdown"></i>Step down</button></div>';
+    subtitleHTML += '<input type="text" size="6" class="subtitle-timing-end" value="'+formatTime(subtitle.end, true)+'" pattern="((?:2[0-3]|[01]?[0-9]):)?[0-5][0-9]:[0-5][0-9].[0-9]{2}">';
+    subtitleHTML += '<div class="subtitle-timing-updown-wrapper subtitle-timing-down-wrapper"><button type="button" class="step-button subtitle-timing-updown end up" title="Step up"><i id="startup" class="stepup"></i>Step up</button></div></div></div>';
     subtitleHTML += '<textarea class="subtitle-input-text validate" maxlength="100" style="display:none;">'+subtitle.text+'</textarea><div class="subtitle-text';
     subtitleHTML += subtitle.text == "" ? ' empty-subtitle-text"' : '"';
-    subtitleHTML += ' tabindex="-1">'+subtitle.text+'<div class="edit-subtitle"></div><div class="delete-subtitle"></div></div></div>';
+    subtitleHTML += ' tabindex="-1">'+subtitle.text.replace(/(?:\r\n|\r|\n)/g, '<br>')+'<div class="edit-subtitle"></div><div class="delete-subtitle"></div></div></div>';
 
     $(".subtitle-editor-frame").append(subtitleHTML);
   });
+
+  subtitleTimingEdit = null;
 }
 
 function selectSubtitle(subtitleId) {
@@ -1660,24 +2021,26 @@ function deselectSubtitle() {
 }
 
 function selectSubtitleInTimeline(subtitle) {
-  subtitleTimeline.setSelection(subtitle.id);
+  if (subtitleEditable) {
+    subtitleTimeline.setSelection(subtitle.id);
 
-  //subtitle start is after timeline window
-  if (subtitle.start > subtitleTimeline.getWindow().end.getTime()) {
-    timelineMoving = true;
-    let start = subtitle.start
-    let end = start + subtitleTimelineWindowViewPortDuration;
-    end = end > (videoMetadata.duration * 1000) ? (videoMetadata.duration * 1000) : end;
-    subtitleTimeline.setWindow(start, end, true, timelineMoved);
-  }
+    //subtitle start is after timeline window
+    if (subtitle.start > subtitleTimeline.getWindow().end.getTime()) {
+      timelineMoving = true;
+      let start = subtitle.start
+      let end = start + subtitleTimelineWindowViewPortDuration;
+      end = end > (videoMetadata.duration * 1000) ? (videoMetadata.duration * 1000) : end;
+      subtitleTimeline.setWindow(start, end, true, timelineMoved);
+    }
 
-  //time is running before timeline
-  if (subtitle.start < subtitleTimeline.getWindow().start.getTime()) {
-    timelineMoving = true;
-    let start = subtitle.start;
-    start = start < 0 ? 0 : start;
-    let end = subtitle.start + subtitleTimelineWindowViewPortDuration;
-    subtitleTimeline.setWindow(start, end, timelineMoved);
+    //time is running before timeline
+    if (subtitle.start < subtitleTimeline.getWindow().start.getTime()) {
+      timelineMoving = true;
+      let start = subtitle.start;
+      start = start < 0 ? 0 : start;
+      let end = subtitle.start + subtitleTimelineWindowViewPortDuration;
+      subtitleTimeline.setWindow(start, end, timelineMoved);
+    }
   }
 }
 
@@ -1828,6 +2191,48 @@ function saveSubtitle(that) {
   $(that).next().show();
 }
 
+function saveSubtitleTiming(that) {
+  let id = $(that).parent().data("id");
+  let subtitle = subtitles.find(s => s.id === id);
+
+  //check for not overlapping with another subtitle
+  let starttime = deformatTime($(that).find(".subtitle-timing-start").val(), true);
+  let endtime = deformatTime($(that).find(".subtitle-timing-end").val(), true);
+
+  if (starttime > endtime) {
+    endtime = starttime + 3000;
+  }
+
+  //check if not in range of other sub
+  if (subtitles) {
+    let existingSubtitle = subtitles.find(s => starttime >= s.start && starttime <= s.end && s.id != id);
+    if (existingSubtitle) {
+      let duration = endtime - starttime;
+      duration = duration < 0 ? 3000 : duration;
+      starttime = existingSubtitle.end;
+      endtime = existingSubtitle.end + duration;
+    }
+
+    //order subtitles for this check
+    subtitles.sort((a,b) => a.start - b.start);
+
+    //check if endtime is not overlapping with other sub
+    let overlappingSubtitle = subtitles.find(s => starttime < s.start && endtime > s.start && s.id != id);
+    if (overlappingSubtitle) {
+      //shorten subtitle so they do not overlap
+      endtime = overlappingSubtitle.start;
+    }
+  }
+
+  subtitle.start = starttime;
+  subtitle.end = endtime;
+
+  storeSubtitles();
+
+  updateSubtitle(subtitle);
+  subtitles[subtitles.findIndex(s => s.id === subtitle.id)] = subtitle;
+}
+
 function getBookmarks() {
   if (user !== undefined && hsh !== undefined) {
     let link = "https://video-editor.eu/api/bookmarks/user/"+encodeURIComponent(user)+"/hash/"+encodeURIComponent(hsh);
@@ -1860,5 +2265,39 @@ function getBookmarks() {
         console.error("Could not retrieve bookmarks");
         console.log(err);
     });
+  }
+}
+
+function subtitleTimingUpDownPressed(that) {
+  let id = $(that).parent().parent().parent().parent().data("id");
+  subtitleTimingEdit = id;
+  let inputTarget = $(that).parent().parent().find("input");
+
+  let incrementPositive = ($(that).hasClass("up"))  ? true : false;
+  let increment = incrementPositive ? 100 : -100;
+
+  $(inputTarget).val(formatTime((deformatTime($(inputTarget).val(), true) + increment), true));
+
+  incrementSubtitleTimeout = setTimeout(function() {
+    incrementSubtitleInterval = setInterval(function() {
+      incrementSubtitleTimingValue(inputTarget, increment);
+    }, 250);
+  }, 300);
+}
+
+function incrementSubtitleTimingValue(target, increment) {
+  $(target).val(formatTime((deformatTime($(target).val(), true) + increment), true));
+}
+
+function subtitleTimingUpDownStopped(that) {
+
+  if (incrementSubtitleTimeout != null && incrementSubtitleInterval != null) {
+    //cancel timer and interval
+    clearTimeout(incrementSubtitleTimeout);
+    incrementSubtitleTimeout = null;
+    clearTimeout(incrementSubtitleInterval);  
+    incrementSubtitleInterval = null;
+
+    saveSubtitleTiming($(that).parent().parent().parent());
   }
 }
